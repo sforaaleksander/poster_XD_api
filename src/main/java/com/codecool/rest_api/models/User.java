@@ -1,7 +1,6 @@
 package com.codecool.rest_api.models;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,13 +16,13 @@ public class User {
     String email;
     @Column(nullable = false)
     boolean isActive;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Post> posts = new HashSet<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Comment> comments = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Comment> comments;
 
     protected User() {}
 
