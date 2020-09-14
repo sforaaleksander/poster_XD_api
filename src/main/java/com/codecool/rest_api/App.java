@@ -9,10 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class App {
     public static void main(String[] args) {
@@ -27,39 +23,45 @@ public class App {
     }
 
     public static void populateDb(EntityManager em) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = Calendar.getInstance().getTime();
-        Date date2 = Calendar.getInstance().getTime();
-        Date date3 = Calendar.getInstance().getTime();
-        try {
-            date1 = sdf.parse("2020-07-21");
-            date2 = sdf.parse("2020-08-01");
-            date3 = sdf.parse("2020-09-01");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        var dp = new DateParser();
 
+        Location cracow = new Location("Cracow", 50.096898F, 19.936306F);
+        Location warsaw = new Location("Warsaw", 52.229675F, 21.012230F);
+        Location budapest = new Location("Budapest", 44.426765F, 26.102537F);
+        
+        User jan = new User("Jan", "Kowalski", "123", "j@gmail.com", true);
+        User balazs = new User("Balázs", "Faragó", "123", "b@gmail.com", true);
         User matthew = new User("Matthew", "Golda", "123", "m@gmail.com", true);
-        Location location = new Location("Kraków", 50.096898F, 19.936306F);
-        Post post = new Post(matthew, location, date1);
-        Comment comment = new Comment(post, date2, matthew, "comment content");
+
+        Post mPost1 = new Post(matthew, cracow, dp.parseDate("2020-09-01"), "some content");
+        Post mPost2 = new Post(matthew, warsaw, dp.parseDate("2020-09-02"), "some content2");
+        Comment mComment1 = new Comment(mPost1, dp.parseDate("2020-09-05"), jan, "nice content");
+        Comment mComment2 = new Comment(mPost1, dp.parseDate("2020-09-05"), balazs, "test");
+        Comment mComment3 = new Comment(mPost1, dp.parseDate("2020-09-05"), matthew, "comment content");
 
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        em.persist(post);
-        em.persist(location);
+        em.persist(mPost1);
+        em.persist(mPost2);
+        em.persist(cracow);
+        em.persist(warsaw);
+        em.persist(budapest);
+        em.persist(jan);
+        em.persist(balazs);
         em.persist(matthew);
-        em.persist(comment);
+        em.persist(mComment1);
+        em.persist(mComment2);
+        em.persist(mComment3);
         transaction.commit();
         System.out.println("\n### Matthew saved.\n");
 
         User alek = new User("Alek", "Jednaszewski", "123", "a@gmail.com", true);
-        Post post2 = new Post(alek, location, date2);
-        Comment comment2 = new Comment(post2, date3, matthew, "comment content2");
+        Post aPost = new Post(alek, budapest, dp.parseDate("2020-09-07"), "test post");
+        Comment comment2 = new Comment(aPost, dp.parseDate("2020-09-09"), matthew, "test comment");
 
         transaction.begin();
         em.persist(alek);
-        em.persist(post2);
+        em.persist(aPost);
         em.persist(comment2);
         transaction.commit();
         System.out.println("\n### Alek saved.\n");
