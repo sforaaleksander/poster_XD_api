@@ -11,16 +11,23 @@ public class Comment {
     private long id;
 
     @ManyToOne
-    @Column(nullable = false)
-    private int postId;
+    private Post post;
 
     @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne
-    @Column(nullable = false)
-    private long userId;
+    private User user;
 
     @Column(nullable = false)
     private String content;
+
+    protected Comment() {}
+
+    public Comment(Post post, Date date, User user, String content) {
+        this.post = post;
+        this.date = date;
+        this.user = user;
+        this.content = content;
+    }
 }

@@ -16,4 +16,15 @@ public class Location {
 
     @Column(nullable = false)
     private float longitude;
+
+    @OneToOne(mappedBy = "location")
+    Post post;
+
+    protected Location() {}
+
+    public Location(String name, float latitude, float longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
