@@ -13,19 +13,22 @@ public class Post {
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     Date date;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+    String content;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
 
-    protected Post() {}
+    protected Post() {
+    }
 
-    public Post(User user, Location location, Date date) {
+    public Post(User user, Location location, Date date, String content) {
         this.user = user;
         this.location = location;
         this.date = date;
+        this.content = content;
     }
 }
