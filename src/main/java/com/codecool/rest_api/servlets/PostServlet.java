@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
 public class PostServlet extends HttpServlet {
 
-    private EntityManager entityManager;
-
-    public PostServlet() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaexamplePU");
-        this.entityManager = emf.createEntityManager();
-    }
+//    private EntityManager entityManager;
+//
+//    public PostServlet() {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaexamplePU");
+//        this.entityManager = emf.createEntityManager();
+//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
