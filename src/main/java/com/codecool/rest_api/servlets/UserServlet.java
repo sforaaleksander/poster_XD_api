@@ -33,7 +33,7 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JsonObject requestAsJson = requestToJsonObject(req);
         Optional<User> user = getRequestedUser(requestAsJson);
 
@@ -71,7 +71,7 @@ public class UserServlet extends HttpServlet {
         return JsonParser.parseString(requestBody).getAsJsonObject();
     }
 
-    private Optional<User> getRequestedUser(JsonObject reqAsJson) throws IOException {
+    private Optional<User> getRequestedUser(JsonObject reqAsJson) {
         Optional<User> user = Optional.empty();
 
         JsonElement id = reqAsJson.get("id");
