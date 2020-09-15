@@ -46,6 +46,10 @@ public class User {
         this.email = email;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String toJson() {
         return String.format("{" +
                 "\"id\": \"%d\"" +
