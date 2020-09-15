@@ -4,6 +4,7 @@ import com.codecool.rest_api.models.Comment;
 import com.codecool.rest_api.models.Location;
 import com.codecool.rest_api.models.Post;
 import com.codecool.rest_api.models.User;
+import com.codecool.rest_api.servlets.PostServlet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,8 +13,10 @@ import javax.persistence.Persistence;
 
 public class App {
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaexamplePU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("posterPU");
         EntityManager em = emf.createEntityManager();
+
+//        new PostServlet(em);
 
         populateDb(em);
         em.clear();
