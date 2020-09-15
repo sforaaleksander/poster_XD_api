@@ -23,7 +23,7 @@ public class App {
     }
 
     public static void populateDb(EntityManager em) {
-        var dp = new DateParser();
+        DateParser dp = new DateParser();
 
         Location cracow = new Location("Cracow", 50.096898F, 19.936306F);
         Location warsaw = new Location("Warsaw", 52.229675F, 21.012230F);
