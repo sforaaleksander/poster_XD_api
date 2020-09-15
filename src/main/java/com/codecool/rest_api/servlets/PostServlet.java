@@ -31,7 +31,7 @@ public class PostServlet extends HttpServlet {
         Optional<Post> optionalPost = postDAO.getById( (long) 1);
         Post post = optionalPost.get();
         PrintWriter out = resp.getWriter();
-        out.println(post.toString());
+        out.println(post.toJSON());
 //        elements.forEach(out::println);
 
         out.println("not implemented");

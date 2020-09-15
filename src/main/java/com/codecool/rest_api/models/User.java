@@ -34,6 +34,30 @@ public class User {
         this.isActive = isActive;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String toJson() {
         return String.format("{" +
                 "\"id\": \"%d\"" +

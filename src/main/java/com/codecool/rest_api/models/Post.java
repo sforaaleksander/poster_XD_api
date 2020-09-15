@@ -1,5 +1,8 @@
 package com.codecool.rest_api.models;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -28,5 +31,16 @@ public class Post {
         this.location = location;
         this.date = date;
         this.content = content;
+    }
+
+    public String toJSON(){
+        //TODO fix the jason parsing
+//        String jsonComments = new Gson().toJson(comments);
+        return String.format("{" +
+                "\"id\" : %d" +
+                ", \"content\" : %s" +
+                ", \"user\": %d" +
+//               ", \"comments\": %s" +
+                "}", id, content, user.getId());
     }
 }
