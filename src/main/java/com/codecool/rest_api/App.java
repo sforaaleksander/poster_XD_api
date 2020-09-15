@@ -16,8 +16,6 @@ public class App {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("posterPU");
         EntityManager em = emf.createEntityManager();
 
-//        new PostServlet(em);
-
         populateDb(em);
         em.clear();
 
