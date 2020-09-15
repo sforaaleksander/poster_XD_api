@@ -18,7 +18,7 @@ public class User {
     boolean isActive;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Post> posts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -36,9 +36,10 @@ public class User {
 
     public String toJson() {
         return String.format("{" +
-                "name: \"%s\"" +
-                ", surname: \"%s\"" +
-                ", email: \"%s\"" +
-                "}", name, surname, email);
+                "\"id\": \"%d\"" +
+                ", \"name\": \"%s\"" +
+                ", \"surname\": \"%s\"" +
+                ", \"email\": \"%s\"" +
+                "}", id, name, surname, email);
     }
 }

@@ -24,7 +24,6 @@ public class PostServlet extends HttpServlet {
 
     private final PostDAO postDAO = new PostDAO();
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        String postId = req.getPathInfo().replace("/", "");
