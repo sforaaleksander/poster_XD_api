@@ -14,7 +14,7 @@ public class User {
     String password;
     @Column(nullable = false)
     String email;
-    @Column(name = "is_active",nullable = false)
+    @Column(name = "is_active", nullable = false)
     boolean isActive;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +32,13 @@ public class User {
         this.password = password;
         this.email = email;
         this.isActive = isActive;
+    }
+
+    public String toJson() {
+        return String.format("{" +
+                "name: \"%s\"" +
+                ", surname: \"%s\"" +
+                ", email: \"%s\"" +
+                "}", name, surname, email);
     }
 }
