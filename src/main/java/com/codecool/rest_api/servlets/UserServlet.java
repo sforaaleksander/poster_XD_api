@@ -34,31 +34,49 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        JsonObject requestAsJson = requestToJsonObject(req);
+        Optional<User> user = getRequestedUser(requestAsJson);
+
+        if (user.isPresent()) {
+            userDao.delete(user.get().getId());
+            resp.setStatus(204);
+            resp.getWriter().println("resource deleted successfully");
+            return;
+        }
+        resp.setStatus(404);
+        resp.getWriter().println("user not found");
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
     }
 
     private void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Optional<User> user = Optional.empty();
-
-        JsonObject reqAsJson = JsonParser.parseString(requestBody).getAsJsonObject();
-
-        JsonElement id = reqAsJson.get("id");
-        if (id != null) user = userDao.getById(Long.parseLong(id.getAsString()));
+        JsonObject requestAsJson = requestToJsonObject(req);
+        Optional<User> user = getRequestedUser(requestAsJson);
 
         if (user.isPresent()) {
-            updateUser(reqAsJson, user.get());
+            updateUser(requestAsJson, user.get());
             resp.setStatus(204);
             resp.getWriter().println("resource updated successfully");
             return;
         }
         resp.setStatus(404);
         resp.getWriter().println("user not found");
+    }
+
+    private JsonObject requestToJsonObject(HttpServletRequest req) throws IOException {
+        String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        return JsonParser.parseString(requestBody).getAsJsonObject();
+    }
+
+    private Optional<User> getRequestedUser(JsonObject reqAsJson) throws IOException {
+        Optional<User> user = Optional.empty();
+
+        JsonElement id = reqAsJson.get("id");
+        if (id != null) user = userDao.getById(Long.parseLong(id.getAsString()));
+        return user;
     }
 
     private void updateUser(JsonObject jsonObject, User user) {
