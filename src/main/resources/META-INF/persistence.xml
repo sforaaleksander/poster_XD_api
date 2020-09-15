@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="jpaexamplePU" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="posterPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.codecool.rest_api.models.User</class>
         <class>com.codecool.rest_api.models.Post</class>
