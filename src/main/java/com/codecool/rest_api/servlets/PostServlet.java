@@ -28,10 +28,10 @@ public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        String postId = req.getPathInfo().replace("/", "");
         List<String> elements = Arrays.stream(req.getRequestURI().split("/")).filter(e -> !e.equals("")).collect(Collectors.toList());
-//        Optional<Post> optionalPost = postDAO.getById((long) 1);
-//        Post post = optionalPost.get();
+        Optional<Post> optionalPost = postDAO.getById( (long) 1);
+        Post post = optionalPost.get();
         PrintWriter out = resp.getWriter();
-//        out.println(post.toString());
+        out.println(post.toString());
 //        elements.forEach(out::println);
 
         out.println("not implemented");

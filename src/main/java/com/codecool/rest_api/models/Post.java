@@ -14,7 +14,7 @@ public class Post {
     Date date;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    long id;
     String content;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
