@@ -36,9 +36,10 @@ public class User {
 
     public String toJson() {
         return String.format("{" +
-                "name: \"%s\"" +
-                ", surname: \"%s\"" +
-                ", email: \"%s\"" +
-                "}", name, surname, email);
+                "\"id\": \"%d\"" +
+                ", \"name\": \"%s\"" +
+                ", \"surname\": \"%s\"" +
+                ", \"email\": \"%s\"" +
+                "}", id, name, surname, email);
     }
 }
