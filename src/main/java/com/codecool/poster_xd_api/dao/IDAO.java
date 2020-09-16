@@ -1,4 +1,4 @@
-package com.codecool.rest_api.dao;
+package com.codecool.poster_xd_api.dao;
 
 import java.util.List;
 import java.util.Optional;

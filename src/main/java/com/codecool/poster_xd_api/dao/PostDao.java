@@ -1,6 +1,6 @@
-package com.codecool.rest_api.dao;
+package com.codecool.poster_xd_api.dao;
 
-import com.codecool.rest_api.models.Post;
+import com.codecool.poster_xd_api.models.Post;
 
 
 public class PostDao extends AbstractDao<Post> {

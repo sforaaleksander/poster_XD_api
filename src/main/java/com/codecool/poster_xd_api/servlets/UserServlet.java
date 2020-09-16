@@ -1,17 +1,13 @@
-package com.codecool.rest_api.servlets;
+package com.codecool.poster_xd_api.servlets;
 
-import com.codecool.rest_api.dao.UserDao;
-import com.codecool.rest_api.models.Post;
-import com.codecool.rest_api.models.User;
+import com.codecool.poster_xd_api.dao.UserDao;
+import com.codecool.poster_xd_api.models.Post;
+import com.codecool.poster_xd_api.models.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @WebServlet(name = "users", urlPatterns = {"/users/*"}, loadOnStartup = 1)
 public class UserServlet extends PosterAbstractServlet<User, Post> {

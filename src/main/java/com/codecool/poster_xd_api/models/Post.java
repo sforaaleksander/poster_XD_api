@@ -1,9 +1,7 @@
-package com.codecool.rest_api.models;
+package com.codecool.poster_xd_api.models;
 
-import com.codecool.rest_api.DateParser;
-import com.google.gson.Gson;
+import com.codecool.poster_xd_api.DateParser;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import javax.persistence.*;
 import java.util.Date;

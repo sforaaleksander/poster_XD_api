@@ -1,6 +1,6 @@
-package com.codecool.rest_api.dao;
+package com.codecool.poster_xd_api.dao;
 
-import com.codecool.rest_api.models.Location;
+import com.codecool.poster_xd_api.models.Location;
 
 public class LocationDao extends AbstractDao<Location> {
 
