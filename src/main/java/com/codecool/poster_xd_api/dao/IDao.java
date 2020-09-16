@@ -3,7 +3,7 @@ package com.codecool.poster_xd_api.dao;
 import java.util.List;
 import java.util.Optional;
 
-public interface IDAO<T> {
+public interface IDao<T> {
 
     Optional<T> getById(Long id);
 
