@@ -41,7 +41,7 @@ public class PostServlet extends HttpServlet {
         Long postId = getPostIdFromRequest(req);
         Optional<Post> optionalPost = postDAO.getById(postId);
         if (optionalPost.isPresent()){
-            out.println(optionalPost.get().toJSON());
+            out.println(optionalPost.get().toJson());
         } else {
             out.println("could not find post of given id");
         }
@@ -65,7 +65,7 @@ public class PostServlet extends HttpServlet {
             return;
         }
         postDAO.insert(optionalPost.get());
-        out.println("inserted post: " + optionalPost.get().toJSON());
+        out.println("inserted post: " + optionalPost.get().toJson());
     }
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -77,7 +77,7 @@ public class PostServlet extends HttpServlet {
             return;
         }
         postDAO.update(optionalPost.get());
-        out.println("updated post: " + optionalPost.get().toJSON());
+        out.println("updated post: " + optionalPost.get().toJson());
     }
 
     @Override

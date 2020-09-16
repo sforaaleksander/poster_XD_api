@@ -35,7 +35,7 @@ public class Post {
         this.content = content;
     }
 
-    public String toJSON() {
+    public String toJson() {
         //TODO fix the jason parsing
 //        String jsonComments = new Gson().toJson(comments);
         JsonObject object = new JsonObject();
