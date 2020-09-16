@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public abstract class AbstractDAO<T> implements IDAO<T>{
+public abstract class AbstractDao<T> implements IDAO<T>{
     protected final EntityManager entityManager;
     protected Class<T> aClass;
 
-    protected AbstractDAO() {
+    protected AbstractDao() {
         this.entityManager = EntityManagerProvider.INSTANCE.getEntityManager();
     }
     

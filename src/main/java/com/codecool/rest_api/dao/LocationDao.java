@@ -2,7 +2,7 @@ package com.codecool.rest_api.dao;
 
 import com.codecool.rest_api.models.Location;
 
-public class LocationDao extends AbstractDAO<Location> {
+public class LocationDao extends AbstractDao<Location> {
 
     public LocationDao() {
         super();

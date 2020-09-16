@@ -2,7 +2,7 @@ package com.codecool.rest_api.servlets;
 
 import com.codecool.rest_api.DateParser;
 import com.codecool.rest_api.dao.LocationDao;
-import com.codecool.rest_api.dao.PostDAO;
+import com.codecool.rest_api.dao.PostDao;
 import com.codecool.rest_api.dao.UserDao;
 import com.codecool.rest_api.models.Comment;
 import com.codecool.rest_api.models.Location;
@@ -12,11 +12,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
-import java.util.Set;
 
 
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
@@ -26,7 +23,7 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
     LocationDao locationDao = new LocationDao();
 
     {
-        this.dao = new PostDAO();
+        this.dao = new PostDao();
         this.objectName = "post";
         this.rootPath = "/posts/";
         this.subPathName = "comments";

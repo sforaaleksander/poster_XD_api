@@ -1,6 +1,6 @@
 package com.codecool.rest_api.servlets;
 
-import com.codecool.rest_api.dao.AbstractDAO;
+import com.codecool.rest_api.dao.AbstractDao;
 import com.codecool.rest_api.models.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class PosterAbstractServlet<T, V> extends HttpServlet {
-    protected AbstractDAO<T> dao;
+    protected AbstractDao<T> dao;
     protected String objectName;
     protected String rootPath;
     protected String subPathName;
