@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class PosterAbstractServlet<T, V> extends HttpServlet {
+public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
     protected AbstractDao<T> dao;
     protected String objectName;
     protected String rootPath;
@@ -57,8 +57,8 @@ public abstract class PosterAbstractServlet<T, V> extends HttpServlet {
     }
 
     protected void getSubPathObjects(HttpServletResponse resp, T object) throws IOException {
-        Containable<V> container = (Containable<V>) object;
-        Set<V> objects = container.getSubObjects();
+        Containable<S> container = (Containable<S>) object;
+        Set<S> objects = container.getSubObjects();
         String postsJsonString = objects.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
         resp.setStatus(200);
         resp.setContentType("application/json");
