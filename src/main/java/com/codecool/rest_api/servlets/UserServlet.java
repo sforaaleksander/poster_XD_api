@@ -1,6 +1,7 @@
 package com.codecool.rest_api.servlets;
 
 import com.codecool.rest_api.dao.UserDao;
+import com.codecool.rest_api.models.Post;
 import com.codecool.rest_api.models.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "users", urlPatterns = {"/users/*"}, loadOnStartup = 1)
@@ -23,23 +25,49 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(404);
-        if (usersCollectionUri(req)) {
+
+        if (uriPointsToUsers(req)) {
             resp.getWriter().println("Not implemented");
             return;
         }
 
         Optional<User> user = getUserByRequestPath(req);
 
-        resp.setContentType("application/json");
+        if (uriPointsToUserPosts(req) && user.isPresent()) {
+            Set<Post> posts = user.get().getPosts();
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (Post post : posts) {
+                sb.append(post.toJson()).append(",\n");
+            }
+            resp.setStatus(200);
+            resp.setContentType("application/json");
+            resp.getWriter().println(removeLast2Chars(sb.toString()) + "]");
+            return;
+        }
+
         if (user.isPresent()) {
             resp.setStatus(200);
+            resp.setContentType("application/json");
             resp.getWriter().println(user.get().toJson());
             return;
         }
         resp.getWriter().println("User not found");
     }
 
-    private boolean usersCollectionUri(HttpServletRequest req) {
+    private String removeLast2Chars(String s) {
+        if (s == null || s.length() < 2) {
+            return s;
+        }
+        return s.substring(0, s.length() - 2);
+    }
+
+    private boolean uriPointsToUserPosts(HttpServletRequest req) {
+        String[] pathParts = req.getPathInfo().replaceFirst("/", "").split("/");
+        return pathParts.length == 2 && pathParts[1].equals("posts");
+    }
+
+    private boolean uriPointsToUsers(HttpServletRequest req) {
         return req.getPathInfo() == null;
     }
 
@@ -62,7 +90,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(404);
-        if (usersCollectionUri(req)) {
+        if (uriPointsToUsers(req)) {
             resp.getWriter().println("Not implemented");
             return;
         }
@@ -79,7 +107,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        if (!usersCollectionUri(req)) {
+        if (!uriPointsToUsers(req)) {
             resp.setStatus(404);
             resp.getWriter().println("Not implemented");
             return;
@@ -99,7 +127,7 @@ public class UserServlet extends HttpServlet {
 
     private JsonObject requestToJsonObject(HttpServletRequest req) throws IOException {
         String requestBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        return JsonParser.parseString(requestBody).getAsJsonObject();
+        return JsonParser.parseReader(req.getReader()).getAsJsonObject();
     }
 
     private Optional<Long> createRequestedUser(JsonObject requestAsJson) {
@@ -122,7 +150,7 @@ public class UserServlet extends HttpServlet {
 
     private void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(404);
-        if (usersCollectionUri(req)) {
+        if (uriPointsToUsers(req)) {
             resp.getWriter().println("Not implemented");
             return;
         }
