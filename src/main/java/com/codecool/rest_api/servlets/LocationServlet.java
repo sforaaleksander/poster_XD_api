@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-public class LocationServlet extends PosterAbstractServlet<Location> {
+public class LocationServlet extends PosterAbstractServlet<Location, String> {
 
     {
         this.dao = new LocationDao();

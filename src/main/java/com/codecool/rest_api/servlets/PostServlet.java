@@ -21,7 +21,7 @@ import java.util.Set;
 
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
 
-public class PostServlet extends PosterAbstractServlet<Post> {
+public class PostServlet extends PosterAbstractServlet<Post, Comment> {
     UserDao userDao = new UserDao();
     LocationDao locationDao = new LocationDao();
 
@@ -30,26 +30,6 @@ public class PostServlet extends PosterAbstractServlet<Post> {
         this.objectName = "post";
         this.rootPath = "/posts/";
         this.subPathName = "comments";
-    }
-
-    @Override
-    protected void getSubPathObjects(HttpServletResponse resp, Post object) throws IOException {
-        Set<Comment> comments = object.getComments();
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (Comment comment : comments) {
-            sb.append(comment.toJson()).append(",\n");
-        }
-        resp.setStatus(200);
-        resp.setContentType("application/json");
-        resp.getWriter().println(removeLast2Chars(sb.toString()) + "]");
-    }
-
-    private String removeLast2Chars(String s) {
-        if (s == null || s.length() < 2) {
-            return s;
-        }
-        return s.substring(0, s.length() - 2);
     }
 
     @Override

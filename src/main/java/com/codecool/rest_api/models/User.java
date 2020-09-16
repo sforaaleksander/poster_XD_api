@@ -81,7 +81,7 @@ public class User implements Indexable, Jsonable, Containable<Post>{
         obj.addProperty("posts", String.format("http://localhost:8080/users/%d/posts", id));
         return obj.toString();
     }
-    
+
     @Override
     public Set<Post> getSubObjects() {
         return posts;

@@ -1,8 +1,7 @@
 package com.codecool.rest_api.servlets;
 
 import com.codecool.rest_api.dao.AbstractDAO;
-import com.codecool.rest_api.models.Indexable;
-import com.codecool.rest_api.models.Jsonable;
+import com.codecool.rest_api.models.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -12,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public abstract class PosterAbstractServlet<T> extends HttpServlet {
+public abstract class PosterAbstractServlet<T, V> extends HttpServlet {
     protected AbstractDAO<T> dao;
     protected String objectName;
     protected String rootPath;
@@ -55,8 +56,14 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
         resp.getWriter().println("could not find " + objectName);
     }
 
-    protected abstract void getSubPathObjects(HttpServletResponse resp, T t) throws IOException;
-
+    protected void getSubPathObjects(HttpServletResponse resp, T object) throws IOException {
+        Containable<V> container = (Containable<V>) object;
+        Set<V> objects = container.getSubObjects();
+        String postsJsonString = objects.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        resp.setStatus(200);
+        resp.setContentType("application/json");
+        resp.getWriter().println("[" + postsJsonString + "]");
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

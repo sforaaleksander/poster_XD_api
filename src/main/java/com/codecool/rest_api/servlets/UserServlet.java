@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "users", urlPatterns = {"/users/*"}, loadOnStartup = 1)
-public class UserServlet extends PosterAbstractServlet<User> {
+public class UserServlet extends PosterAbstractServlet<User, Post> {
 
     //TODO test this
     {
@@ -22,15 +22,6 @@ public class UserServlet extends PosterAbstractServlet<User> {
         this.objectName = "user";
         this.rootPath = "/users/";
         this.subPathName = "posts";
-    }
-
-    @Override
-    protected void getSubPathObjects(HttpServletResponse resp, User object) throws IOException {
-        Set<Post> posts = object.getPosts();
-        String postsJsonString = posts.stream().map(Post::toJson).collect(Collectors.joining(",\n"));
-        resp.setStatus(200);
-        resp.setContentType("application/json");
-        resp.getWriter().println("[" + postsJsonString + "]");
     }
 
     @Override
