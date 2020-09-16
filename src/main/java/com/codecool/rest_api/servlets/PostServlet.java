@@ -9,12 +9,9 @@ import com.codecool.rest_api.models.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +21,13 @@ import java.util.Optional;
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
 
 public class PostServlet extends PosterAbstractServlet<Post> {
+
+    {
+        this.dao = new PostDAO();
+        this.objectName = "post";
+        this.rootPath = "/posts/";
+        this.subPathName = "comments";
+    }
 
     private final PostDAO postDAO = new PostDAO();
     private final UserDao userDao = new UserDao();

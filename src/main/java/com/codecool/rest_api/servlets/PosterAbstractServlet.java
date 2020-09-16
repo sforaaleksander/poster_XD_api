@@ -3,7 +3,6 @@ package com.codecool.rest_api.servlets;
 import com.codecool.rest_api.dao.AbstractDAO;
 import com.codecool.rest_api.models.Indexable;
 import com.codecool.rest_api.models.Jsonable;
-import com.codecool.rest_api.models.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class PosterAbstractServlet<T> extends HttpServlet {
     protected AbstractDAO<T> dao;
@@ -24,8 +22,7 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
     abstract Optional<T> createPojoFromJsonObject(JsonObject jsonObject);
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getMethod();
 
         if (method.equals("PATCH")) {
@@ -58,7 +55,7 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
         resp.getWriter().println("could not find " + objectName);
     }
 
-    protected abstract void getSubPathObjects(HttpServletResponse resp, T t)  throws IOException;
+    protected abstract void getSubPathObjects(HttpServletResponse resp, T t) throws IOException;
 
 
     @Override
@@ -82,7 +79,6 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
         resp.getWriter().println("could not create " + objectName);
     }
 
-
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(404);
         if (uriPointsToRoot(req)) {
@@ -91,7 +87,6 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
         }
         JsonObject requestAsJson = requestToJsonObject(req);
         Optional<T> optionalObject = getObjectFromRequestPath(req);
-
         if (optionalObject.isPresent()) {
             updateObject(requestAsJson, optionalObject.get());
             resp.setStatus(204);
