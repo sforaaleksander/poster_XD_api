@@ -20,9 +20,8 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     {
         this.dao = new CommentDao();
-        this.objectName = "post";
-        this.rootPath = "/posts/";
-        this.subPathName = "comments";
+        this.objectName = "comment";
+        this.rootPath = "/comments/";
     }
 
     @Override
