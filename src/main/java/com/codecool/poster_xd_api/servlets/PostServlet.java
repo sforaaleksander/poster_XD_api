@@ -62,11 +62,10 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
         JsonElement locationId = jsonObject.get("location");
         if (locationId != null) {
             Optional<Location> optionalLocation = locationDao.getById(locationId.getAsLong());
-            if (optionalLocation.isPresent()) {
-                post.setLocation(optionalLocation.get());
-            } else {
+            if (!optionalLocation.isPresent()) {
                 return;
             }
+            post.setLocation(optionalLocation.get());
         }
 
         JsonElement date = jsonObject.get("date");
