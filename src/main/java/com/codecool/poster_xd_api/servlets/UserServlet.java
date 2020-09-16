@@ -12,7 +12,6 @@ import java.util.Optional;
 @WebServlet(name = "users", urlPatterns = {"/users/*"}, loadOnStartup = 1)
 public class UserServlet extends PosterAbstractServlet<User, Post> {
 
-    //TODO test this
     {
         this.dao = new UserDao();
         this.objectName = "user";
