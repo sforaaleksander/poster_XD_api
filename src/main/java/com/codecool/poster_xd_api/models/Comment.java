@@ -49,7 +49,7 @@ public class Comment implements Indexable, Jsonable {
         return object.toString();
     }
 
-    public void setContent(String asString) {
+    public void setContent(String content) {
         this.content = content;
     }
 }
