@@ -36,6 +36,26 @@ public class User {
         this.isActive = isActive;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

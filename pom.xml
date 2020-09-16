@@ -47,6 +47,7 @@
             <artifactId>postgresql</artifactId>
             <version>${version.postgres}</version>
         </dependency>
+      
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
