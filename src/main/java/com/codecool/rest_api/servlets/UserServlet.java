@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "users", urlPatterns = {"/users/*"}, loadOnStartup = 1)
 public class UserServlet extends PosterAbstractServlet<User> {
@@ -26,21 +27,10 @@ public class UserServlet extends PosterAbstractServlet<User> {
     @Override
     protected void getSubPathObjects(HttpServletResponse resp, User object) throws IOException {
         Set<Post> posts = object.getPosts();
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (Post post : posts) {
-            sb.append(post.toJson()).append(",\n");
-        }
+        String postsJsonString = posts.stream().map(Post::toJson).collect(Collectors.joining(",\n"));
         resp.setStatus(200);
         resp.setContentType("application/json");
-        resp.getWriter().println(removeLast2Chars(sb.toString()) + "]");
-    }
-
-    private String removeLast2Chars(String s) {
-        if (s == null || s.length() < 2) {
-            return s;
-        }
-        return s.substring(0, s.length() - 2);
+        resp.getWriter().println("[" + postsJsonString + "]");
     }
 
     @Override
