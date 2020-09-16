@@ -1,13 +1,14 @@
 package com.codecool.poster_xd_api.models;
 
 import com.google.gson.JsonObject;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements Indexable, Jsonable, Containable<Post>{
+public @Data class User implements Indexable, Jsonable, Containable<Post> {
     @Column(nullable = false)
     String name;
     @Column(nullable = false)
@@ -36,42 +37,6 @@ public class User implements Indexable, Jsonable, Containable<Post>{
         this.isActive = isActive;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public long getId() {
-        return id;
-    }
-
     public String toJson() {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", this.id);
@@ -85,5 +50,10 @@ public class User implements Indexable, Jsonable, Containable<Post>{
     @Override
     public Set<Post> getSubObjects() {
         return posts;
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 }
