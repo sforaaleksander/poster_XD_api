@@ -53,7 +53,6 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
         }
         Date date1 = new DateParser().parseDate(dateString.getAsString());
         Post post = new Post(optionalUser.get(), optionalLocation.get(), date1, content.getAsString());
-        dao.insert(post);
         return Optional.of(post);
     }
 

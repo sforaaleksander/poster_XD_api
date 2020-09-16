@@ -4,12 +4,12 @@ import com.codecool.poster_xd_api.DateParser;
 import com.codecool.poster_xd_api.dao.CommentDao;
 import com.codecool.poster_xd_api.dao.PostDao;
 import com.codecool.poster_xd_api.dao.UserDao;
-import com.codecool.poster_xd_api.models.Comment;
-import com.codecool.poster_xd_api.models.Post;
-import com.codecool.poster_xd_api.models.User;
+import com.codecool.poster_xd_api.models.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -20,9 +20,8 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     {
         this.dao = new CommentDao();
-        this.objectName = "post";
-        this.rootPath = "/posts/";
-        this.subPathName = "comments";
+        this.objectName = "comment";
+        this.rootPath = "/comments/";
     }
 
     @Override
@@ -49,7 +48,6 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
         }
         Date date1 = new DateParser().parseDate(dateString.getAsString());
         Comment comment = new Comment(optionalPost.get(), date1, optionalUser.get(), content.getAsString());
-        dao.insert(comment);
         return Optional.of(comment);
     }
 
@@ -58,6 +56,13 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
         JsonElement contentJson = jsonObject.get("content");
         if (contentJson != null) comment.setContent(contentJson.getAsString());
         dao.update(comment);
+    }
+
+    @Override
+    protected void getSubPathObjects(HttpServletResponse resp, Comment object) throws IOException {
+        resp.setStatus(400);
+        resp.setContentType("application/json");
+        resp.getWriter().println("wrong path provided");
     }
 }
 
