@@ -27,4 +27,20 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
 }

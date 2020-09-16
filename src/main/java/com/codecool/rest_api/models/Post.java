@@ -1,6 +1,7 @@
 package com.codecool.rest_api.models;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import javax.persistence.*;
@@ -24,7 +25,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Comment> comments;
 
-    protected Post() {}
+    protected Post() {
+    }
 
     public Post(User user, Location location, Date date, String content) {
         this.user = user;
@@ -33,14 +35,14 @@ public class Post {
         this.content = content;
     }
 
-    public String toJSON(){
+    public String toJSON() {
         //TODO fix the jason parsing
 //        String jsonComments = new Gson().toJson(comments);
-        return String.format("{" +
-                "\"id\" : %d" +
-                ", \"content\" : %s" +
-                ", \"user\": %d" +
-//               ", \"comments\": %s" +
-                "}", id, content, user.getId());
+        JsonObject object = new JsonObject();
+        object.addProperty("user", this.user.getId());
+        object.addProperty("location", this.location.getId());
+        object.addProperty("date", date.toString());
+        object.addProperty("content", this.content);
+        return object.toString();
     }
 }
