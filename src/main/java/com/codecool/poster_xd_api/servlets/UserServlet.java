@@ -34,7 +34,6 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
         if (password == null) return Optional.empty();
 
         User user = new User(name.getAsString(), surname.getAsString(), password.getAsString(), email.getAsString(), true);
-        dao.insert(user);
         return Optional.of(user);
     }
 
