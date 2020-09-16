@@ -1,5 +1,7 @@
 package com.codecool.rest_api.models;
 
+import com.google.gson.JsonObject;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -70,12 +72,17 @@ public class User {
         return id;
     }
 
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
     public String toJson() {
-        return String.format("{" +
-                "\"id\": \"%d\"" +
-                ", \"name\": \"%s\"" +
-                ", \"surname\": \"%s\"" +
-                ", \"email\": \"%s\"" +
-                "}", id, name, surname, email);
+        JsonObject obj = new JsonObject();
+        obj.addProperty("id", this.id);
+        obj.addProperty("name", this.name);
+        obj.addProperty("surname", this.surname);
+        obj.addProperty("email", this.email);
+        obj.addProperty("posts", String.format("http://localhost:8080/users/%d/posts", id));
+        return obj.toString();
     }
 }
