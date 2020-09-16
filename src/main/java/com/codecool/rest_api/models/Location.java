@@ -1,9 +1,10 @@
 package com.codecool.rest_api.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Location implements Indexable, Jsonable{
+public class Location implements Indexable, Jsonable, Containable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +18,8 @@ public class Location implements Indexable, Jsonable{
     @Column(nullable = false)
     private float longitude;
 
-    @OneToOne(mappedBy = "location")
-    Post post;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    Set<Post> posts;
 
     protected Location() {}
 
@@ -47,6 +48,12 @@ public class Location implements Indexable, Jsonable{
     @Override
     public String toJson() {
         //TODO
+        return null;
+    }
+
+    @Override
+    public Set getSubObjects() {
+
         return null;
     }
 }

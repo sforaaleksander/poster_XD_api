@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "posts")
 public class Post implements Indexable, Jsonable{
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     Location location;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
