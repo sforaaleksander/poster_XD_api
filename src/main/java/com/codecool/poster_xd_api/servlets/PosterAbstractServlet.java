@@ -76,6 +76,7 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
         Optional<T> optionalObject = createPojoFromJsonObject(requestAsJson);
 
         if (optionalObject.isPresent()) {
+            dao.insert(optionalObject.get());
             resp.setStatus(201);
             Indexable object = (Indexable) optionalObject.get();
             resp.setHeader("location", rootPath + object.getId());
