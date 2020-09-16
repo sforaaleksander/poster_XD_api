@@ -3,7 +3,7 @@ package com.codecool.rest_api.models;
 import javax.persistence.*;
 
 @Entity
-public class Location implements Indexable{
+public class Location implements Indexable, Jsonable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,5 +42,11 @@ public class Location implements Indexable{
 
     public float getLongitude() {
         return longitude;
+    }
+
+    @Override
+    public String toJson() {
+        //TODO
+        return null;
     }
 }

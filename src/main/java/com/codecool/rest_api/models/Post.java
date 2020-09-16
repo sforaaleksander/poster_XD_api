@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Post implements Indexable{
+public class Post implements Indexable, Jsonable{
     @OneToOne
     Location location;
     @Column(nullable = false)

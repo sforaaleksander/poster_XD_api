@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "comments")
-public class Comment implements Indexable {
+public class Comment implements Indexable, Jsonable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +34,11 @@ public class Comment implements Indexable {
     @Override
     public long getId() {
         return id;
+    }
+
+    @Override
+    public String toJson() {
+        //TODO
+        return null;
     }
 }
