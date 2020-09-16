@@ -1,5 +1,7 @@
 package com.codecool.rest_api.models;
 
+import com.google.gson.JsonObject;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,7 +20,7 @@ public class User {
     boolean isActive;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Post> posts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -54,16 +56,33 @@ public class User {
         return isActive;
     }
 
-    public Long getId() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public long getId() {
         return id;
     }
 
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
     public String toJson() {
-        return String.format("{" +
-                "\"id\": \"%d\"" +
-                ", \"name\": \"%s\"" +
-                ", \"surname\": \"%s\"" +
-                ", \"email\": \"%s\"" +
-                "}", id, name, surname, email);
+        JsonObject obj = new JsonObject();
+        obj.addProperty("id", this.id);
+        obj.addProperty("name", this.name);
+        obj.addProperty("surname", this.surname);
+        obj.addProperty("email", this.email);
+        obj.addProperty("posts", String.format("http://localhost:8080/users/%d/posts", id));
+        return obj.toString();
     }
 }
