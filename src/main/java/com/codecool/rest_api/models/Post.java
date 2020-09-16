@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Indexable, Jsonable{
     @OneToOne
     Location location;
     @Column(nullable = false)
@@ -35,7 +35,7 @@ public class Post {
         this.content = content;
     }
 
-    public String toJSON() {
+    public String toJson() {
         //TODO fix the jason parsing
 //        String jsonComments = new Gson().toJson(comments);
         JsonObject object = new JsonObject();
@@ -44,5 +44,10 @@ public class Post {
         object.addProperty("date", date.toString());
         object.addProperty("content", this.content);
         return object.toString();
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 }
