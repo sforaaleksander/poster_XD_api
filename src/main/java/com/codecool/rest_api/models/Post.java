@@ -1,5 +1,6 @@
 package com.codecool.rest_api.models;
 
+import com.codecool.rest_api.DateParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -41,7 +42,7 @@ public class Post implements Indexable, Jsonable{
         JsonObject object = new JsonObject();
         object.addProperty("user", this.user.getId());
         object.addProperty("location", this.location.getId());
-        object.addProperty("date", date.toString());
+        object.addProperty("date", new DateParser().dateToString(date));
         object.addProperty("content", this.content);
         return object.toString();
     }
@@ -49,5 +50,21 @@ public class Post implements Indexable, Jsonable{
     @Override
     public long getId() {
         return id;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

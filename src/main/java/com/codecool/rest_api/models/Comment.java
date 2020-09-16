@@ -1,5 +1,8 @@
 package com.codecool.rest_api.models;
 
+import com.codecool.rest_api.DateParser;
+import com.google.gson.JsonObject;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -38,7 +41,11 @@ public class Comment implements Indexable, Jsonable {
 
     @Override
     public String toJson() {
-        //TODO
-        return null;
+        JsonObject object = new JsonObject();
+        object.addProperty("post", this.post.getId());
+        object.addProperty("user", this.user.getId());
+        object.addProperty("date", new DateParser().dateToString(date));
+        object.addProperty("content", this.content);
+        return object.toString();
     }
 }
