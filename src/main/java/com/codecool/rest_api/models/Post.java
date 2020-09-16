@@ -1,6 +1,6 @@
-package com.codecool.poster_xd_api.models;
+package com.codecool.rest_api.models;
 
-import com.codecool.poster_xd_api.DateParser;
+import com.codecool.rest_api.DateParser;
 import com.google.gson.JsonObject;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Post implements Indexable, Jsonable, Containable<Comment>{
+public class Post implements Indexable, Jsonable, Containable<Comment> {
     @ManyToOne(fetch = FetchType.LAZY)
     Location location;
     @Column(nullable = false)
@@ -35,7 +35,7 @@ public class Post implements Indexable, Jsonable, Containable<Comment>{
     }
 
     public String toJson() {
-        //TODO fix the jason parsing
+        //TODO fix the json parsing
 //        String jsonComments = new Gson().toJson(comments);
         JsonObject object = new JsonObject();
         object.addProperty("user", this.user.getId());

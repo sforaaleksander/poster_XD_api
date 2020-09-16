@@ -1,7 +1,7 @@
-package com.codecool.poster_xd_api.servlets;
+package com.codecool.rest_api.servlets;
 
-import com.codecool.poster_xd_api.dao.LocationDao;
-import com.codecool.poster_xd_api.models.Location;
+import com.codecool.rest_api.dao.LocationDao;
+import com.codecool.rest_api.models.Location;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 

@@ -1,7 +1,7 @@
-package com.codecool.poster_xd_api.servlets;
+package com.codecool.rest_api.servlets;
 
-import com.codecool.poster_xd_api.dao.AbstractDao;
-import com.codecool.poster_xd_api.models.*;
+import com.codecool.rest_api.dao.AbstractDao;
+import com.codecool.rest_api.models.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

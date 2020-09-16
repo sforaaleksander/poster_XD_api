@@ -1,9 +1,9 @@
-package com.codecool.poster_xd_api;
+package com.codecool.rest_api;
 
-import com.codecool.poster_xd_api.models.Comment;
-import com.codecool.poster_xd_api.models.Location;
-import com.codecool.poster_xd_api.models.Post;
-import com.codecool.poster_xd_api.models.User;
+import com.codecool.rest_api.models.Comment;
+import com.codecool.rest_api.models.Location;
+import com.codecool.rest_api.models.Post;
+import com.codecool.rest_api.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

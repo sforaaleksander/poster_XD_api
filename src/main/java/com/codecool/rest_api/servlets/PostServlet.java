@@ -1,13 +1,13 @@
-package com.codecool.poster_xd_api.servlets;
+package com.codecool.rest_api.servlets;
 
-import com.codecool.poster_xd_api.DateParser;
-import com.codecool.poster_xd_api.dao.LocationDao;
-import com.codecool.poster_xd_api.dao.PostDao;
-import com.codecool.poster_xd_api.dao.UserDao;
-import com.codecool.poster_xd_api.models.Comment;
-import com.codecool.poster_xd_api.models.Location;
-import com.codecool.poster_xd_api.models.Post;
-import com.codecool.poster_xd_api.models.User;
+import com.codecool.rest_api.DateParser;
+import com.codecool.rest_api.dao.LocationDao;
+import com.codecool.rest_api.dao.PostDao;
+import com.codecool.rest_api.dao.UserDao;
+import com.codecool.rest_api.models.Comment;
+import com.codecool.rest_api.models.Location;
+import com.codecool.rest_api.models.Post;
+import com.codecool.rest_api.models.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 

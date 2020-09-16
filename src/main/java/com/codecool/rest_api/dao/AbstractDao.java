@@ -1,6 +1,6 @@
-package com.codecool.poster_xd_api.dao;
+package com.codecool.rest_api.dao;
 
-import com.codecool.poster_xd_api.EntityManagerProvider;
+import com.codecool.rest_api.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
