@@ -66,11 +66,16 @@ public class PostServlet extends PosterAbstractServlet<Post> {
         JsonElement content = requestAsJson.get("content");
         if (content == null) return Optional.empty();
 
-        User user = userDao.getById(userId.getAsLong()).get();
-        Location location = locationDao.getById(locationId.getAsLong()).get();
-        Date date1 = new DateParser().parseDate(dateString.getAsString());
 
-        Post post = new Post(user, location, date1, content.getAsString());
+        Optional<User> optionalUser = userDao.getById(userId.getAsLong());
+        Optional<Location> optionalLocation = locationDao.getById(locationId.getAsLong());
+
+        //TODO check if Java 11 works fine to refine this expression as optional.isEmpty()
+        if (!(optionalUser.isPresent() && optionalLocation.isPresent())) {
+            return Optional.empty();
+        }
+        Date date1 = new DateParser().parseDate(dateString.getAsString());
+        Post post = new Post(optionalUser.get(), optionalLocation.get(), date1, content.getAsString());
         dao.insert(post);
         return Optional.of(post);
     }

@@ -1,6 +1,6 @@
 package com.codecool.rest_api.servlets;
 
-import com.codecool.rest_api.dao.LocationDAO;
+import com.codecool.rest_api.dao.LocationDao;
 import com.codecool.rest_api.models.Location;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class LocationServlet extends PosterAbstractServlet<Location> {
 
     {
-        this.dao = new LocationDAO();
+        this.dao = new LocationDao();
         this.objectName = "comment";
         this.rootPath = "/comments/";
         this.subPathName = "";
