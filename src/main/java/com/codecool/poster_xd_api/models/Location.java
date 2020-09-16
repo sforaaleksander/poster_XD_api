@@ -1,10 +1,13 @@
 package com.codecool.poster_xd_api.models;
 
+import com.google.gson.JsonObject;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Location implements Indexable, Jsonable, Containable<Post>{
+public @Data class Location implements Indexable, Jsonable, Containable<Post>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,26 +32,15 @@ public class Location implements Indexable, Jsonable, Containable<Post>{
         this.longitude = longitude;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public float getLatitude() {
-        return latitude;
-    }
-
-    public float getLongitude() {
-        return longitude;
-    }
-
     @Override
     public String toJson() {
-        //TODO
-        return null;
+        JsonObject obj = new JsonObject();
+        obj.addProperty("id", this.id);
+        obj.addProperty("name", this.name);
+        obj.addProperty("latitude", this.latitude);
+        obj.addProperty("longitude", this.longitude);
+        obj.addProperty("posts", String.format("http://localhost:8080/locations/%d/posts", id));
+        return obj.toString();
     }
 
     @Override
