@@ -48,4 +48,8 @@ public class Comment implements Indexable, Jsonable {
         object.addProperty("content", this.content);
         return object.toString();
     }
+
+    public void setContent(String asString) {
+        this.content = content;
+    }
 }
