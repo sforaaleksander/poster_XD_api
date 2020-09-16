@@ -32,25 +32,16 @@ public class PostServlet extends PosterAbstractServlet<Post> {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-        if (!isCorrectPathToPosts(req)) {
+        if (uriPointsToRoot(req)) {
             out.println("wrong path provided");
             return;
         }
-        Long postId = getPostIdFromRequest(req);
-        Optional<Post> optionalPost = postDAO.getById(postId);
+        Optional<Post> optionalPost = getObjectFromRequestPath(req);
         if (optionalPost.isPresent()){
             out.println(optionalPost.get().toJson());
         } else {
             out.println("could not find post of given id");
         }
-    }
-
-    private Long getPostIdFromRequest(HttpServletRequest req) {
-        return Long.valueOf(req.getPathInfo().replace("/", ""));
-    }
-
-    private boolean isCorrectPathToPosts(HttpServletRequest req) {
-        return !(req.getPathInfo() == null || req.getPathInfo().equals("/"));
     }
 
     @Override
