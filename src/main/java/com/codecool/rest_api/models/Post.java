@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Indexable{
     @OneToOne
     Location location;
     @Column(nullable = false)
@@ -44,5 +44,10 @@ public class Post {
         object.addProperty("date", date.toString());
         object.addProperty("content", this.content);
         return object.toString();
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 }

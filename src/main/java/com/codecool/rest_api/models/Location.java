@@ -3,7 +3,7 @@ package com.codecool.rest_api.models;
 import javax.persistence.*;
 
 @Entity
-public class Location {
+public class Location implements Indexable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

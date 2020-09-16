@@ -1,6 +1,7 @@
 package com.codecool.rest_api.servlets;
 
 import com.codecool.rest_api.dao.AbstractDAO;
+import com.codecool.rest_api.models.Indexable;
 import com.codecool.rest_api.models.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,11 +39,10 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
             resp.getWriter().println("Not implemented");
             return;
         }
-
-        Optional<T> object = getObjectFromRequestPath(req);
-
-        if (object.isPresent()) {
-            dao.delete(object.get().getId());
+        Optional<T> optionalObject = getObjectFromRequestPath(req);
+        if (optionalObject.isPresent()) {
+            Indexable object = (Indexable) optionalObject.get();
+            dao.delete(object.getId());
             resp.setStatus(204);
             return;
         }

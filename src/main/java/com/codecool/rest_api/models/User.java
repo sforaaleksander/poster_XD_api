@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Indexable{
     @Column(nullable = false)
     String name;
     @Column(nullable = false)
