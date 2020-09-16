@@ -54,7 +54,10 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
     }
 
     @Override
-    protected void updateObject(JsonObject requestAsJson, Comment comment) {
-
+    protected void updateObject(JsonObject jsonObject, Comment comment) {
+        JsonElement contentJson = jsonObject.get("content");
+        if (contentJson != null) comment.setContent(contentJson.getAsString());
+        dao.update(comment);
     }
 }
+
