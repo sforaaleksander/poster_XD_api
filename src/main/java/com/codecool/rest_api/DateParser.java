@@ -10,7 +10,7 @@ public class DateParser {
      * @param s date in format "yyyy-MM-dd"
      * @return Date object represented by the provided input
      */
-    Date parseDate(String s) {
+    public Date parseDate(String s) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = Calendar.getInstance().getTime();
         try {
@@ -19,5 +19,10 @@ public class DateParser {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public String dateToString(Date d) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(d);
     }
 }
