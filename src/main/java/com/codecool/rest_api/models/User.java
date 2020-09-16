@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements Indexable, Jsonable{
+public class User implements Indexable, Jsonable, Containable<Post>{
     @Column(nullable = false)
     String name;
     @Column(nullable = false)
@@ -72,10 +72,6 @@ public class User implements Indexable, Jsonable{
         return id;
     }
 
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
     public String toJson() {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", this.id);
@@ -84,5 +80,10 @@ public class User implements Indexable, Jsonable{
         obj.addProperty("email", this.email);
         obj.addProperty("posts", String.format("http://localhost:8080/users/%d/posts", id));
         return obj.toString();
+    }
+    
+    @Override
+    public Set<Post> getSubObjects() {
+        return posts;
     }
 }

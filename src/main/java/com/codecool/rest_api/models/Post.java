@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Post implements Indexable, Jsonable{
+public class Post implements Indexable, Jsonable, Containable<Comment>{
     @ManyToOne(fetch = FetchType.LAZY)
     Location location;
     @Column(nullable = false)
@@ -52,10 +52,6 @@ public class Post implements Indexable, Jsonable{
         return id;
     }
 
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
     public void setLocation(Location location) {
         this.location = location;
     }
@@ -66,5 +62,10 @@ public class Post implements Indexable, Jsonable{
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public Set<Comment> getSubObjects() {
+        return comments;
     }
 }

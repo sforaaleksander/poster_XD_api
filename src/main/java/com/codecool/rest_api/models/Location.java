@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Location implements Indexable, Jsonable, Containable{
+public class Location implements Indexable, Jsonable, Containable<Post>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,8 +52,7 @@ public class Location implements Indexable, Jsonable, Containable{
     }
 
     @Override
-    public Set getSubObjects() {
-
-        return null;
+    public Set<Post> getSubObjects() {
+        return posts;
     }
 }
