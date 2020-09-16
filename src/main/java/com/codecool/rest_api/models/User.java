@@ -51,9 +51,4 @@ public @Data class User implements Indexable, Jsonable, Containable<Post> {
     public Set<Post> getSubObjects() {
         return posts;
     }
-
-    @Override
-    public long getId() {
-        return id;
-    }
 }
