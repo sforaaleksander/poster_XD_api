@@ -1,6 +1,6 @@
-package com.codecool.rest_api.servlets;
+package com.codecool.poster_xd_api.servlets;
 
-import com.codecool.rest_api.models.Comment;
+import com.codecool.poster_xd_api.models.Comment;
 import com.google.gson.JsonObject;
 
 import java.util.Optional;

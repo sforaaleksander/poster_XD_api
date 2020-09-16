@@ -1,4 +1,4 @@
-package com.codecool.rest_api.models;
+package com.codecool.poster_xd_api.models;
 
 import com.google.gson.JsonObject;
 import lombok.Data;

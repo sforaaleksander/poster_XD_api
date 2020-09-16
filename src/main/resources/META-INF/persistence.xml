@@ -6,10 +6,10 @@
 
     <persistence-unit name="posterPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.codecool.rest_api.models.User</class>
-        <class>com.codecool.rest_api.models.Post</class>
-        <class>com.codecool.rest_api.models.Location</class>
-        <class>com.codecool.rest_api.models.Comment</class>
+        <class>com.codecool.poster_xd_api.models.User</class>
+        <class>com.codecool.poster_xd_api.models.Post</class>
+        <class>com.codecool.poster_xd_api.models.Location</class>
+        <class>com.codecool.poster_xd_api.models.Comment</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect"/>
             <property name="hibernate.hbm2dll.auto" value="create-drop"/>
