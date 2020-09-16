@@ -34,7 +34,11 @@ public class PostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-        Long postId = Long.valueOf(req.getPathInfo().replace("/", ""));
+        if (!isCorrectPathToPosts(req)) {
+            out.println("wrong path provided");
+            return;
+        }
+        Long postId = getPostIdFromRequest(req);
         Optional<Post> optionalPost = postDAO.getById(postId);
         if (optionalPost.isPresent()){
             out.println(optionalPost.get().toJSON());
@@ -43,21 +47,37 @@ public class PostServlet extends HttpServlet {
         }
     }
 
+    private Long getPostIdFromRequest(HttpServletRequest req) {
+        return Long.valueOf(req.getPathInfo().replace("/", ""));
+    }
+
+    private boolean isCorrectPathToPosts(HttpServletRequest req) {
+        return !(req.getPathInfo() == null || req.getPathInfo().equals("/"));
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         JsonObject jsonObject = requestToJsonObject(req);
-        Optional<Post> post = createPojoFromJsonObject(jsonObject);
-        postDAO.insert(post.get());
-        out.println("inserted post: " + post.get().toJSON());
+        Optional<Post> optionalPost = createPojoFromJsonObject(jsonObject);
+        if (!optionalPost.isPresent()) {
+            out.println("wrong data provided, could not insert post");
+            return;
+        }
+        postDAO.insert(optionalPost.get());
+        out.println("inserted post: " + optionalPost.get().toJSON());
     }
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         JsonObject jsonObject = requestToJsonObject(req);
-        Optional<Post> post = createPojoFromJsonObject(jsonObject);
-        postDAO.update(post.get());
-        out.println("updated post: " + post.get().toJSON());
+        Optional<Post> optionalPost = createPojoFromJsonObject(jsonObject);
+        if (!optionalPost.isPresent()) {
+            out.println("wrong data provided, could not update post");
+            return;
+        }
+        postDAO.update(optionalPost.get());
+        out.println("updated post: " + optionalPost.get().toJSON());
     }
 
     @Override
@@ -84,17 +104,20 @@ public class PostServlet extends HttpServlet {
                 userIdJson == null ) {
             return Optional.empty();
         }
-        User user = userDao.getById(userIdJson.getAsLong()).get();
-        Location location = locationDAO.getById(locationIdJson.getAsLong()).get();
+        Optional<User> optionalUser = userDao.getById(userIdJson.getAsLong());
+        Optional<Location> optionalLocation = locationDAO.getById(locationIdJson.getAsLong());
         Date date = null;
         try {
             date = new SimpleDateFormat("dd-MM-yyyy").parse(dateJson.getAsString());
         } catch (ParseException e) {
             e.printStackTrace();
         };
-        String content = contentJson.getAsString();
+        if (!optionalUser.isPresent() || !optionalLocation.isPresent() || date == null) {
+            return Optional.empty();
+        }
 
-        return Optional.of(new Post(user, location, date, content));
+        String content = contentJson.getAsString();
+        return Optional.of(new Post(optionalUser.get(), optionalLocation.get(), date, content));
 
     }
 
