@@ -2,6 +2,7 @@ package com.codecool.rest_api.servlets;
 
 import com.codecool.rest_api.dao.AbstractDAO;
 import com.codecool.rest_api.models.Indexable;
+import com.codecool.rest_api.models.Jsonable;
 import com.codecool.rest_api.models.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,7 +17,9 @@ import java.util.stream.Collectors;
 
 public abstract class PosterAbstractServlet<T> extends HttpServlet {
     protected AbstractDAO<T> dao;
-
+    protected String objectName;
+    protected String rootPath;
+    protected String subPathName;
 
     abstract Optional<T> createPojoFromJsonObject(JsonObject jsonObject);
 
@@ -31,6 +34,73 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
             super.service(req, resp);
         }
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(404);
+
+        if (uriPointsToRoot(req)) {
+            resp.getWriter().println("Not implemented");
+            return;
+        }
+        Optional<T> optionalObject = getObjectFromRequestPath(req);
+        if (uriPointsToSubPath(req, subPathName) && optionalObject.isPresent()) {
+            getSubPathObjects(resp, optionalObject.get());
+            return;
+        }
+        if (optionalObject.isPresent()) {
+            resp.setStatus(200);
+            resp.setContentType("application/json");
+            Jsonable object = (Jsonable) optionalObject.get();
+            resp.getWriter().println(object.toJson());
+            return;
+        }
+        resp.getWriter().println("could not find " + objectName);
+    }
+
+    protected abstract void getSubPathObjects(HttpServletResponse resp, T t)  throws IOException;
+
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        if (!uriPointsToRoot(req)) {
+            resp.setStatus(404);
+            resp.getWriter().println("not implemented");
+            return;
+        }
+        JsonObject requestAsJson = requestToJsonObject(req);
+        Optional<T> optionalObject = createPojoFromJsonObject(requestAsJson);
+
+        if (optionalObject.isPresent()) {
+            resp.setStatus(201);
+            Indexable object = (Indexable) optionalObject.get();
+            resp.setHeader("location", rootPath + object.getId());
+            resp.getWriter().println("resource created successfully");
+            return;
+        }
+        resp.setStatus(422);
+        resp.getWriter().println("could not create " + objectName);
+    }
+
+
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(404);
+        if (uriPointsToRoot(req)) {
+            resp.getWriter().println("Not implemented");
+            return;
+        }
+        JsonObject requestAsJson = requestToJsonObject(req);
+        Optional<T> optionalObject = getObjectFromRequestPath(req);
+
+        if (optionalObject.isPresent()) {
+            updateObject(requestAsJson, optionalObject.get());
+            resp.setStatus(204);
+            return;
+        }
+        resp.getWriter().println("user not found");
+    }
+
+    protected abstract void updateObject(JsonObject requestAsJson, T t);
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -78,6 +148,4 @@ public abstract class PosterAbstractServlet<T> extends HttpServlet {
         String[] pathParts = req.getPathInfo().replaceFirst("/", "").split("/");
         return pathParts.length == 2 && pathParts[1].equals(path);
     }
-
-    abstract void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 }

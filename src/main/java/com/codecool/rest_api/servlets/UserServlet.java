@@ -19,39 +19,22 @@ public class UserServlet extends PosterAbstractServlet<User> {
     //TODO test this
     {
         this.dao = new UserDao();
+        this.objectName = "user";
+        this.rootPath = "/users/";
+        this.subPathName = "posts";
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setStatus(404);
-
-        if (uriPointsToRoot(req)) {
-            resp.getWriter().println("Not implemented");
-            return;
+    protected void getSubPathObjects(HttpServletResponse resp, User object) throws IOException {
+        Set<Post> posts = object.getPosts();
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (Post post : posts) {
+            sb.append(post.toJson()).append(",\n");
         }
-
-        Optional<User> user = getObjectFromRequestPath(req);
-
-        if (uriPointsToSubPath(req, "posts") && user.isPresent()) {
-            Set<Post> posts = user.get().getPosts();
-            StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            for (Post post : posts) {
-                sb.append(post.toJson()).append(",\n");
-            }
-            resp.setStatus(200);
-            resp.setContentType("application/json");
-            resp.getWriter().println(removeLast2Chars(sb.toString()) + "]");
-            return;
-        }
-
-        if (user.isPresent()) {
-            resp.setStatus(200);
-            resp.setContentType("application/json");
-            resp.getWriter().println(user.get().toJson());
-            return;
-        }
-        resp.getWriter().println("User not found");
+        resp.setStatus(200);
+        resp.setContentType("application/json");
+        resp.getWriter().println(removeLast2Chars(sb.toString()) + "]");
     }
 
     private String removeLast2Chars(String s) {
@@ -59,26 +42,6 @@ public class UserServlet extends PosterAbstractServlet<User> {
             return s;
         }
         return s.substring(0, s.length() - 2);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        if (!uriPointsToRoot(req)) {
-            resp.setStatus(404);
-            resp.getWriter().println("Not implemented");
-            return;
-        }
-        JsonObject requestAsJson = requestToJsonObject(req);
-        Optional<User> optionalUser = createPojoFromJsonObject(requestAsJson);
-
-        if (optionalUser.isPresent()) {
-            resp.setStatus(201);
-            resp.setHeader("location", "/users/" + optionalUser.get().getId());
-            resp.getWriter().println("resource created successfully");
-            return;
-        }
-        resp.setStatus(422);
-        resp.getWriter().println("couldn't create user");
     }
 
     @Override
@@ -101,24 +64,7 @@ public class UserServlet extends PosterAbstractServlet<User> {
     }
 
     @Override
-    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setStatus(404);
-        if (uriPointsToRoot(req)) {
-            resp.getWriter().println("Not implemented");
-            return;
-        }
-        JsonObject requestAsJson = requestToJsonObject(req);
-        Optional<User> user = getObjectFromRequestPath(req);
-
-        if (user.isPresent()) {
-            updateUser(requestAsJson, user.get());
-            resp.setStatus(204);
-            return;
-        }
-        resp.getWriter().println("user not found");
-    }
-
-    private void updateUser(JsonObject jsonObject, User user) {
+    protected void updateObject(JsonObject jsonObject, User user) {
         JsonElement name = jsonObject.get("name");
         if (name != null) user.setName(name.getAsString());
 
