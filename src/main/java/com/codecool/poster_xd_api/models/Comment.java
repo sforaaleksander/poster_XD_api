@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "comments")
-public @Data class Comment implements Indexable, Jsonable {
+public class Comment implements Indexable, Jsonable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,5 +52,14 @@ public @Data class Comment implements Indexable, Jsonable {
         object.addProperty("date", new DateParser().dateToString(date));
         object.addProperty("content", this.content);
         return object.toString();
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
