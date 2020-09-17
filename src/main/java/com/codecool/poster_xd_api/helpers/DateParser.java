@@ -1,4 +1,4 @@
-package com.codecool.poster_xd_api;
+package com.codecool.poster_xd_api.helpers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

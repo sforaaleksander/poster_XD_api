@@ -1,7 +1,7 @@
 package com.codecool.poster_xd_api.dao;
 
-import com.codecool.poster_xd_api.DateParser;
-import com.codecool.poster_xd_api.EntityManagerProvider;
+import com.codecool.poster_xd_api.helpers.DateParser;
+import com.codecool.poster_xd_api.helpers.EntityManagerProvider;
 import com.codecool.poster_xd_api.models.User;
 
 import javax.persistence.EntityManager;

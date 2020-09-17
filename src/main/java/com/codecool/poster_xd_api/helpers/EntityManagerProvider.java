@@ -1,4 +1,4 @@
-package com.codecool.poster_xd_api;
+package com.codecool.poster_xd_api.helpers;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
