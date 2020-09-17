@@ -61,36 +61,13 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
         List<User> userList;
         List<List<User>> lists = new ArrayList<>();
 
-        addUsersMatchingParameter(req, lists, "surname");
-        addUsersMatchingParameter(req, lists, "name");
-        addUsersMatchingParameter(req, lists, "isActive");
+        addObjectsMatchingParameter(req, lists, "surname");
+        addObjectsMatchingParameter(req, lists, "name");
+        addObjectsMatchingParameter(req, lists, "isActive");
 
-        userList = populateUserList(lists);
+        userList = populateObjectList(lists);
 
         String objectsAsJsonString = userList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
-    }
-
-    private List<User> populateUserList(List<List<User>> lists) {
-        final List<User> userList;
-        if (lists.size() > 1) {
-            for (int i = 1; i < lists.size(); i++) {
-                lists.get(0).retainAll(lists.get(i));
-            }
-        }
-        if (lists.size() > 0) {
-            userList = lists.get(0);
-        } else {
-            userList = dao.getAll();
-        }
-        return userList;
-    }
-
-    private void addUsersMatchingParameter(HttpServletRequest req, List<List<User>> lists, String parameter) {
-        String surname = req.getParameter(parameter);
-        if (surname != null) {
-            List<User> list1 = dao.getObjectsByField(parameter, surname);
-            lists.add(list1);
-        }
     }
 }

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -163,5 +164,29 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
     protected boolean uriPointsToSubPath(HttpServletRequest req, String path) {
         String[] pathParts = req.getPathInfo().replaceFirst("/", "").split("/");
         return pathParts.length == 2 && pathParts[1].equals(path);
+    }
+
+
+    protected List<T> populateObjectList(List<List<T>> lists) {
+        final List<T> objectList;
+        if (lists.size() > 1) {
+            for (int i = 1; i < lists.size(); i++) {
+                lists.get(0).retainAll(lists.get(i));
+            }
+        }
+        if (lists.size() > 0) {
+            objectList = lists.get(0);
+        } else {
+            objectList = dao.getAll();
+        }
+        return objectList;
+    }
+
+    protected void addObjectsMatchingParameter(HttpServletRequest req, List<List<T>> lists, String parameter) {
+        String value = req.getParameter(parameter);
+        if (value != null) {
+            List<T> list1 = dao.getObjectsByField(parameter, value);
+            lists.add(list1);
+        }
     }
 }
