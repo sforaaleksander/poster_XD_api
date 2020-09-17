@@ -65,6 +65,14 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
         addUsersMatchingParameter(req, lists, "name");
         addUsersMatchingParameter(req, lists, "isActive");
 
+        userList = populateUserList(lists);
+
+        String objectsAsJsonString = userList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
+    }
+
+    private List<User> populateUserList(List<List<User>> lists) {
+        final List<User> userList;
         if (lists.size() > 1) {
             for (int i = 1; i < lists.size(); i++) {
                 lists.get(0).retainAll(lists.get(i));
@@ -75,10 +83,7 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
         } else {
             userList = dao.getAll();
         }
-
-        String objectsAsJsonString = userList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
-        writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
-
+        return userList;
     }
 
     private void addUsersMatchingParameter(HttpServletRequest req, List<List<User>> lists, String parameter) {
