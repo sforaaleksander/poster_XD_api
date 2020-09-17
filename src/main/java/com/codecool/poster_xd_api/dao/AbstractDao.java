@@ -69,14 +69,16 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     protected List<T> getObjectsByStringField(String fieldName, String fieldValue) {
-        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE lower(u." + fieldName + ") LIKE :value", aClass);
+        TypedQuery<T> query = entityManager.createQuery(
+                "SELECT u FROM " + aClass.getSimpleName() + " u WHERE lower(u." + fieldName + ") LIKE :value", aClass);
         return query
                 .setParameter("value", "%" + fieldValue.toLowerCase() + "%")
                 .getResultList();
     }
 
     protected List<T> getObjectsByObjectField(String fieldName, Object o) {
-        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
+        TypedQuery<T> query = entityManager.createQuery(
+                "SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
         return query
                 .setParameter("value", o)
                 .getResultList();
