@@ -1,11 +1,11 @@
 package com.codecool.poster_xd_api.dao;
 
 import com.codecool.poster_xd_api.EntityManagerProvider;
-import com.codecool.poster_xd_api.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -54,8 +54,10 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     public List<T> getObjectsByField(String fieldName, String fieldValue) {
-        return isFieldBoolean(fieldName)
+        return isFieldType(fieldName, boolean.class)
                 ? getObjectsByBooleanField(fieldName, fieldValue)
+                : isFieldType(fieldName, Date.class)
+                ? getObjectsByDateField(fieldName, fieldValue)
                 : getObjectsByStringField(fieldName, fieldValue);
     }
 
@@ -66,17 +68,24 @@ public abstract class AbstractDao<T> implements IDao<T> {
                 .getResultList();
     }
 
-    protected List<T> getObjectsByBooleanField(String fieldName, String fieldValue){
+    protected List<T> getObjectsByBooleanField(String fieldName, String fieldValue) {
         TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
         return query
                 .setParameter("value", Boolean.valueOf(fieldValue.toLowerCase()))
                 .getResultList();
     }
 
-    private boolean isFieldBoolean(String fieldName) {
+    protected List<T> getObjectsByDateField(String fieldName, String fieldValue) {
+        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
+        return query
+                .setParameter("value", fieldValue.toLowerCase())
+                .getResultList();
+    }
+
+    private boolean isFieldType(String fieldName, Class<?> c) {
         try {
             Class<?> k = aClass.getDeclaredField(fieldName).getType();
-            if (k == boolean.class) {
+            if (k == c) {
                 return true;
             }
         } catch (NoSuchFieldException e) {
