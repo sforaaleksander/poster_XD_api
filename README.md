@@ -1,7 +1,7 @@
 
 ### To run this project:
 
-1.Create PostgresSql database.
+1. Create PostgresSql database.
 
 * Change the user to postgres
  
@@ -25,13 +25,13 @@
 
 `grant all privileges on database restdb to restuser;`
 
-2.Uncomment two commented lines in persistence.xml
+2. Uncomment two commented lines in persistence.xml.
 
-3.Run App.main() to populate database
+3. Run App.main() to populate the database.
 
-4.Comment those 2 lines back xD
+4. Comment those 2 lines back xD.
 
-5.Run server - jetty:run
+5. Run server - jetty:run.
 
 #### endpoints:
 
