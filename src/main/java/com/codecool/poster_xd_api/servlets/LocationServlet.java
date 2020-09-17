@@ -51,7 +51,11 @@ public class LocationServlet extends PosterAbstractServlet<Location, Post> {
         List<List<Location>> lists = new ArrayList<>();
         addObjectsMatchingParameter(req, lists, "name");
         locationList = populateObjectList(lists);
-        String objectsAsJsonString = locationList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        String objectsAsJsonString = locationList
+                .stream()
+                .map(e->(Jsonable)e)
+                .map(Jsonable::toJson)
+                .collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }
 }

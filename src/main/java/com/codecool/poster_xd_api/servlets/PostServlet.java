@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
 public class PostServlet extends PosterAbstractServlet<Post, Comment> {
+
     UserDao userDao = new UserDao();
     LocationDao locationDao = new LocationDao();
 
@@ -35,8 +36,10 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
                 && requestAsJson.has("content"))) {
             return Optional.empty();
         }
+
         Optional<User> optionalUser = userDao.getById(requestAsJson.get("user").getAsLong());
         Optional<Location> optionalLocation = locationDao.getById(requestAsJson.get("location").getAsLong());
+
         if (!(optionalUser.isPresent() && optionalLocation.isPresent())) {
             return Optional.empty();
         }
@@ -66,7 +69,11 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
         addObjectsMatchingParameter(req, lists, "content");
         addObjectsMatchingParameter(req, lists, "date");
         postList = populateObjectList(lists);
-        String objectsAsJsonString = postList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        String objectsAsJsonString = postList
+                .stream()
+                .map(e->(Jsonable)e)
+                .map(Jsonable::toJson)
+                .collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }
 }
