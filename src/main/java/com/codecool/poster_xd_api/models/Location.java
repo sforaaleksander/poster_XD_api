@@ -35,10 +35,10 @@ public @Data class Location implements Indexable, Jsonable, Containable<Post>{
     @Override
     public String toJson() {
         JsonObject obj = new JsonObject();
-        obj.addProperty("id", this.id);
-        obj.addProperty("name", this.name);
-        obj.addProperty("latitude", this.latitude);
-        obj.addProperty("longitude", this.longitude);
+        obj.addProperty("id", id);
+        obj.addProperty("name", name);
+        obj.addProperty("latitude", latitude);
+        obj.addProperty("longitude", longitude);
         obj.addProperty("posts", String.format("http://localhost:8080/locations/%d/posts", id));
         return obj.toString();
     }

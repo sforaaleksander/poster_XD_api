@@ -50,10 +50,11 @@ public class Comment implements Indexable, Jsonable {
     @Override
     public String toJson() {
         JsonObject object = new JsonObject();
-        object.addProperty("post", this.post.getId());
-        object.addProperty("user", this.user.getId());
+        object.addProperty("id", id);
+        object.addProperty("post", post.getId());
+        object.addProperty("user", user.getId());
         object.addProperty("date", new DateParser().dateToString(date));
-        object.addProperty("content", this.content);
+        object.addProperty("content", content);
         return object.toString();
     }
 
