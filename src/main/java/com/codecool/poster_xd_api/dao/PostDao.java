@@ -1,10 +1,6 @@
 package com.codecool.poster_xd_api.dao;
 
 import com.codecool.poster_xd_api.models.Post;
-import com.codecool.poster_xd_api.models.User;
-
-import java.util.List;
-
 
 public class PostDao extends AbstractDao<Post> {
 
