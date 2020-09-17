@@ -28,22 +28,18 @@ public class LocationServlet extends PosterAbstractServlet<Location, Post> {
 
     @Override
     Optional<Location> createPojoFromJsonObject(JsonObject jsonObject) {
-        JsonElement nameJson = jsonObject.get("name");
-        JsonElement latitudeJson = jsonObject.get("latitude");
-        JsonElement longitudeJson = jsonObject.get("longitude");
-        if (nameJson == null || latitudeJson == null || longitudeJson == null) {
+        if (!(jsonObject.has("name") || jsonObject.has("latitude") || jsonObject.has("longitude"))) {
             return Optional.empty();
         }
-        String name = nameJson.getAsString();
-        float latitude = latitudeJson.getAsFloat();
-        float longitude = longitudeJson.getAsFloat();
+        String name = jsonObject.get("name").getAsString();
+        float latitude = jsonObject.get("latitude").getAsFloat();
+        float longitude = jsonObject.get("longitude").getAsFloat();
         return Optional.of(new Location(name, latitude, longitude));
     }
 
     @Override
-    protected void updateObject(JsonObject requestAsJson, Location location) {
-        JsonElement name = requestAsJson.get("name");
-        if (name != null) location.setName(name.getAsString());
+    protected void updateObject(JsonObject jsonObject, Location location) {
+        if (!jsonObject.has("name")) location.setName(jsonObject.get("name").getAsString());
         dao.update(location);
     }
 
