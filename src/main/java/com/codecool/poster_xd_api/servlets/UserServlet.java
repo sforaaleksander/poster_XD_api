@@ -58,7 +58,7 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
 
     @Override
     protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<User> userList = new ArrayList<>();
+        List<User> userList;
         List<List<User>> lists = new ArrayList<>();
 
         addUsersMatchingParameter(req, lists, "surname");
