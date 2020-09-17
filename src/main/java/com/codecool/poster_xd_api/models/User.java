@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public @Data class User implements Indexable, Jsonable, Containable<Post> {
+public class User implements Indexable, Jsonable, Containable<Post> {
     @Column(nullable = false)
     String name;
     @Column(nullable = false)
@@ -50,5 +50,22 @@ public @Data class User implements Indexable, Jsonable, Containable<Post> {
     @Override
     public Set<Post> getSubObjects() {
         return posts;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
