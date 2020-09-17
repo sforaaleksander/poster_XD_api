@@ -2,6 +2,7 @@ package com.codecool.poster_xd_api.models;
 
 import com.codecool.poster_xd_api.DateParser;
 import com.google.gson.JsonObject;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Post implements Indexable, Jsonable, Containable<Comment> {
+public @Data class Post implements Indexable, Jsonable, Containable<Comment> {
     @ManyToOne(fetch = FetchType.LAZY)
     Location location;
     @Column(nullable = false)
@@ -49,23 +50,6 @@ public class Post implements Indexable, Jsonable, Containable<Comment> {
         object.addProperty("date", new DateParser().dateToString(date));
         object.addProperty("content", this.content);
         return object.toString();
-    }
-
-    @Override
-    public long getId() {
-        return id;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     @Override
