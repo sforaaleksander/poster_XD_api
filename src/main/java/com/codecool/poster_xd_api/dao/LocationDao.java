@@ -11,9 +11,4 @@ public class LocationDao extends AbstractDao<Location> {
         super();
         this.aClass = Location.class;
     }
-
-    @Override
-    public List<User> getObjectsByField(String fieldName, String fieldValue) {
-        return null;
-    }
 }

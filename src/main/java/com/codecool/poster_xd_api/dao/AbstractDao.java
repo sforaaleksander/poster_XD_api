@@ -5,6 +5,7 @@ import com.codecool.poster_xd_api.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -50,5 +51,10 @@ public abstract class AbstractDao<T> implements IDao<T> {
         transaction.commit();
     }
 
-    public abstract List<User> getObjectsByField(String fieldName, String fieldValue);
+    public List<T> getObjectsByField(String fieldName, String fieldValue) {
+        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE lower(u." + fieldName + ") LIKE lower(:value)", aClass);
+        return query
+                .setParameter("value", "%" + fieldValue + "%")
+                .getResultList();
+    }
 }

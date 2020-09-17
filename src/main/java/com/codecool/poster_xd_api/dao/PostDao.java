@@ -12,9 +12,4 @@ public class PostDao extends AbstractDao<Post> {
         super();
         this.aClass = Post.class;
     }
-
-    @Override
-    public List<User> getObjectsByField(String fieldName, String fieldValue) {
-        return null;
-    }
 }

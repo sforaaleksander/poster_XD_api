@@ -11,9 +11,4 @@ public class CommentDao extends AbstractDao<Comment>{
         super();
         this.aClass = Comment.class;
     }
-
-    @Override
-    public List<User> getObjectsByField(String fieldName, String fieldValue) {
-        return null;
-    }
 }
