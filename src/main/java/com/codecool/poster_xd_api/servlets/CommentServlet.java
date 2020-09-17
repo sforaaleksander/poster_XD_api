@@ -32,28 +32,20 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     @Override
     Optional<Comment> createPojoFromJsonObject(JsonObject jsonObject) {
-        JsonElement idJson = jsonObject.get("id");
-        if (idJson == null) return Optional.empty();
+        if (jsonObject.has("id")) return Optional.empty();
+        if (jsonObject.has("user")) return Optional.empty();
+        if (jsonObject.has("date")) return Optional.empty();
+        if (jsonObject.has("post")) return Optional.empty();
+        if (jsonObject.has("content")) return Optional.empty();
 
-        JsonElement userIdJson = jsonObject.get("user");
-        if (userIdJson == null) return Optional.empty();
+        Optional<User> optionalUser = userDao.getById(jsonObject.get("id").getAsLong());
+        Optional<Post> optionalPost = postDao.getById(jsonObject.get("user").getAsLong());
 
-        JsonElement dateString = jsonObject.get("date");
-        if (dateString == null) return Optional.empty();
-
-        JsonElement postIdJson = jsonObject.get("post");
-        if (postIdJson == null) return Optional.empty();
-
-        JsonElement content = jsonObject.get("content");
-        if (content == null) return Optional.empty();
-
-        Optional<User> optionalUser = userDao.getById(userIdJson.getAsLong());
-        Optional<Post> optionalPost = postDao.getById(postIdJson.getAsLong());
         if (!(optionalUser.isPresent() && optionalPost.isPresent())) {
             return Optional.empty();
         }
-        Date date1 = new DateParser().parseDate(dateString.getAsString());
-        Comment comment = new Comment(optionalPost.get(), date1, optionalUser.get(), content.getAsString());
+        Date date = new DateParser().parseDate(jsonObject.get("date").getAsString());
+        Comment comment = new Comment(optionalPost.get(), date, optionalUser.get(), jsonObject.get("post").getAsString());
         return Optional.of(comment);
     }
 
@@ -81,8 +73,10 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
         commentList = populateObjectList(lists);
 
-        String objectsAsJsonString = commentList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        String objectsAsJsonString = commentList
+                .stream()
+                .map(e -> (Jsonable) e).map(Jsonable::toJson)
+                .collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }
 }
-
