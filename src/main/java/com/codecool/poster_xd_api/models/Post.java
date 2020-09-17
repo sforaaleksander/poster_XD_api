@@ -2,7 +2,6 @@ package com.codecool.poster_xd_api.models;
 
 import com.codecool.poster_xd_api.helpers.DateParser;
 import com.google.gson.JsonObject;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -61,7 +60,7 @@ public class Post implements Indexable, Jsonable, Containable<Comment> {
     public long getId() {
         return this.id;
     }
-    
+
     public void setLocation(Location location) {
         this.location = location;
     }
