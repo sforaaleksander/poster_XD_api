@@ -1,7 +1,6 @@
 package com.codecool.poster_xd_api.models;
 
 import com.google.gson.JsonObject;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
