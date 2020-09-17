@@ -2,14 +2,13 @@ package com.codecool.poster_xd_api.models;
 
 import com.codecool.poster_xd_api.DateParser;
 import com.google.gson.JsonObject;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "comments")
-public @Data class Comment implements Indexable, Jsonable {
+public class Comment implements Indexable, Jsonable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,13 +43,21 @@ public @Data class Comment implements Indexable, Jsonable {
     }
 
     @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
     public String toJson() {
         JsonObject object = new JsonObject();
-        object.addProperty("id", this.id);
         object.addProperty("post", this.post.getId());
         object.addProperty("user", this.user.getId());
         object.addProperty("date", new DateParser().dateToString(date));
         object.addProperty("content", this.content);
         return object.toString();
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

@@ -69,7 +69,8 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
         List<Post> postList;
         List<List<Post>> lists = new ArrayList<>();
         addObjectsMatchingParameter(req, lists, "content");
-        addObjectsMatchingParameter(req, lists, "date");
+        //TODO
+//        addObjectsMatchingParameter(req, lists, "date");
         postList = populateObjectList(lists);
         String objectsAsJsonString = postList
                 .stream()
