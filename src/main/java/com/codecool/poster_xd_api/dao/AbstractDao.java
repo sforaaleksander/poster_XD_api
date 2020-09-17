@@ -1,6 +1,7 @@
 package com.codecool.poster_xd_api.dao;
 
 import com.codecool.poster_xd_api.EntityManagerProvider;
+import com.codecool.poster_xd_api.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -15,7 +16,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     protected AbstractDao() {
         this.entityManager = EntityManagerProvider.INSTANCE.getEntityManager();
     }
-    
+
     @Override
     public Optional<T> getById(Long id) {
         return Optional.ofNullable(entityManager.find(aClass, id));
@@ -48,4 +49,6 @@ public abstract class AbstractDao<T> implements IDao<T> {
         method.accept(object);
         transaction.commit();
     }
+
+    public abstract List<User> getObjectsByField(String fieldName, String fieldValue);
 }
