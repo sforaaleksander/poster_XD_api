@@ -34,6 +34,13 @@ public class Post implements Indexable, Jsonable, Containable<Comment> {
         this.content = content;
     }
 
+    public Post(User user, Location location, String content) {
+        this.user = user;
+        this.location = location;
+        this.date = new Date();
+        this.content = content;
+    }
+
     public String toJson() {
         //TODO fix the json parsing
 //        String jsonComments = new Gson().toJson(comments);

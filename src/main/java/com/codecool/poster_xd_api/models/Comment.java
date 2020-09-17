@@ -35,6 +35,13 @@ public class Comment implements Indexable, Jsonable {
         this.content = content;
     }
 
+    public Comment(Post post, User user, String content) {
+        this.post = post;
+        this.date = new Date();
+        this.user = user;
+        this.content = content;
+    }
+
     @Override
     public long getId() {
         return id;
