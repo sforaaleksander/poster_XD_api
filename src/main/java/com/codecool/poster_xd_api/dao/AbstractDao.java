@@ -1,13 +1,13 @@
 package com.codecool.poster_xd_api.dao;
 
+import com.codecool.poster_xd_api.DateParser;
 import com.codecool.poster_xd_api.EntityManagerProvider;
+import com.codecool.poster_xd_api.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractDao<T> implements IDao<T> {
@@ -54,11 +54,18 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     public List<T> getObjectsByField(String fieldName, String fieldValue) {
-        return isFieldType(fieldName, boolean.class)
-                ? getObjectsByBooleanField(fieldName, fieldValue)
-                : isFieldType(fieldName, Date.class)
-                ? getObjectsByDateField(fieldName, fieldValue)
-                : getObjectsByStringField(fieldName, fieldValue);
+        try {
+            return isFieldType(fieldName, boolean.class)
+                    ? getObjectsByObjectField(fieldName, Boolean.valueOf(fieldValue.toLowerCase()))
+                    : isFieldType(fieldName, Date.class)
+                    ? getObjectsByObjectField(fieldName, new DateParser().parseDate(fieldValue.toLowerCase()))
+                    : isFieldType(fieldName, User.class)
+                    ? getObjectsByObjectField(fieldName, new UserDao().getById(Long.parseLong(fieldValue.toLowerCase())).get())
+                    : getObjectsByStringField(fieldName, fieldValue);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     protected List<T> getObjectsByStringField(String fieldName, String fieldValue) {
@@ -68,17 +75,10 @@ public abstract class AbstractDao<T> implements IDao<T> {
                 .getResultList();
     }
 
-    protected List<T> getObjectsByBooleanField(String fieldName, String fieldValue) {
+    protected List<T> getObjectsByObjectField(String fieldName, Object o) {
         TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
         return query
-                .setParameter("value", Boolean.valueOf(fieldValue.toLowerCase()))
-                .getResultList();
-    }
-
-    protected List<T> getObjectsByDateField(String fieldName, String fieldValue) {
-        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
-        return query
-                .setParameter("value", fieldValue.toLowerCase())
+                .setParameter("value", o)
                 .getResultList();
     }
 

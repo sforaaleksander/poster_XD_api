@@ -6,7 +6,8 @@ import com.google.gson.JsonObject;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "comments")
+@Entity
+@Table(name = "comments")
 public class Comment implements Indexable, Jsonable {
 
     @Id
