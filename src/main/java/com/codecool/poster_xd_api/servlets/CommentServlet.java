@@ -60,9 +60,8 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     @Override
     protected void getSubPathObjects(HttpServletResponse resp, Comment object) throws IOException {
-        resp.setStatus(400);
-        resp.setContentType("application/json");
-        resp.getWriter().println("wrong path provided");
+        resp.setStatus(404);
+        resp.getWriter().println("Wrong path provided");
     }
 }
 
