@@ -28,7 +28,9 @@ public class LocationServlet extends PosterAbstractServlet<Location, Post> {
 
     @Override
     Optional<Location> createPojoFromJsonObject(JsonObject jsonObject) {
-        if (!(jsonObject.has("name") || jsonObject.has("latitude") || jsonObject.has("longitude"))) {
+        if (!(jsonObject.has("name")
+                && jsonObject.has("latitude")
+                && jsonObject.has("longitude"))) {
             return Optional.empty();
         }
         String name = jsonObject.get("name").getAsString();
@@ -39,7 +41,7 @@ public class LocationServlet extends PosterAbstractServlet<Location, Post> {
 
     @Override
     protected void updateObject(JsonObject jsonObject, Location location) {
-        if (!jsonObject.has("name")) location.setName(jsonObject.get("name").getAsString());
+        if (jsonObject.has("name")) location.setName(jsonObject.get("name").getAsString());
         dao.update(location);
     }
 

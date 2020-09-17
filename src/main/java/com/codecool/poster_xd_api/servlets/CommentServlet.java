@@ -8,11 +8,17 @@ import com.codecool.poster_xd_api.models.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@WebServlet(name = "comments", urlPatterns = {"/comments/*"}, loadOnStartup = 1)
 public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     UserDao userDao = new UserDao();
@@ -26,28 +32,19 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     @Override
     Optional<Comment> createPojoFromJsonObject(JsonObject jsonObject) {
-        JsonElement idJson = jsonObject.get("id");
-        if (idJson == null) return Optional.empty();
+        if (!(jsonObject.has("user")
+                && jsonObject.has("post")
+                && jsonObject.has("content"))) {
+            return Optional.empty();
+        }
 
-        JsonElement userIdJson = jsonObject.get("user");
-        if (userIdJson == null) return Optional.empty();
+        Optional<User> optionalUser = userDao.getById(jsonObject.get("user").getAsLong());
+        Optional<Post> optionalPost = postDao.getById(jsonObject.get("post").getAsLong());
 
-        JsonElement dateString = jsonObject.get("date");
-        if (dateString == null) return Optional.empty();
-
-        JsonElement postIdJson = jsonObject.get("post");
-        if (postIdJson == null) return Optional.empty();
-
-        JsonElement content = jsonObject.get("content");
-        if (content == null) return Optional.empty();
-
-        Optional<User> optionalUser = userDao.getById(userIdJson.getAsLong());
-        Optional<Post> optionalPost = postDao.getById(postIdJson.getAsLong());
         if (!(optionalUser.isPresent() && optionalPost.isPresent())) {
             return Optional.empty();
         }
-        Date date1 = new DateParser().parseDate(dateString.getAsString());
-        Comment comment = new Comment(optionalPost.get(), date1, optionalUser.get(), content.getAsString());
+        Comment comment = new Comment(optionalPost.get(), optionalUser.get(), jsonObject.get("content").getAsString());
         return Optional.of(comment);
     }
 
@@ -63,5 +60,22 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
         resp.setStatus(404);
         resp.getWriter().println("Wrong path provided");
     }
-}
 
+    @Override
+    protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        List<Comment> commentList;
+        List<List<Comment>> lists = new ArrayList<>();
+
+        addObjectsMatchingParameter(req, lists, "date");
+        addObjectsMatchingParameter(req, lists, "user");
+        addObjectsMatchingParameter(req, lists, "content");
+
+        commentList = populateObjectList(lists);
+
+        String objectsAsJsonString = commentList
+                .stream()
+                .map(e -> (Jsonable) e).map(Jsonable::toJson)
+                .collect(Collectors.joining(",\n"));
+        writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
+    }
+}

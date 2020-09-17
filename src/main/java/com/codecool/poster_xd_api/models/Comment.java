@@ -6,7 +6,8 @@ import com.google.gson.JsonObject;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "comments")
+@Entity
+@Table(name = "comments")
 public class Comment implements Indexable, Jsonable {
 
     @Id
@@ -30,6 +31,13 @@ public class Comment implements Indexable, Jsonable {
     public Comment(Post post, Date date, User user, String content) {
         this.post = post;
         this.date = date;
+        this.user = user;
+        this.content = content;
+    }
+
+    public Comment(Post post, User user, String content) {
+        this.post = post;
+        this.date = new Date();
         this.user = user;
         this.content = content;
     }
