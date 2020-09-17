@@ -36,9 +36,8 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(404);
-
         if (uriPointsToRoot(req)) {
-            resp.getWriter().println("Not implemented");
+            getObjectsForRoot(req, resp);
             return;
         }
         Optional<T> optionalObject = getObjectFromRequestPath(req);
@@ -47,13 +46,17 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
             return;
         }
         if (optionalObject.isPresent()) {
-            resp.setStatus(200);
-            resp.setContentType("application/json");
-            Jsonable object = (Jsonable) optionalObject.get();
-            resp.getWriter().println(object.toJson());
+            getSingleObject(resp, optionalObject.get());
             return;
         }
         resp.getWriter().println("could not find " + objectName);
+    }
+
+    private void getSingleObject(HttpServletResponse resp, T object) throws IOException {
+        resp.setStatus(200);
+        resp.setContentType("application/json");
+        Jsonable jsonable = (Jsonable) object;
+        resp.getWriter().println(jsonable.toJson());
     }
 
     protected void getSubPathObjects(HttpServletResponse resp, T object) throws IOException {
