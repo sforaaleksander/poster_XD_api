@@ -5,7 +5,6 @@ import com.codecool.poster_xd_api.dao.LocationDao;
 import com.codecool.poster_xd_api.dao.PostDao;
 import com.codecool.poster_xd_api.dao.UserDao;
 import com.codecool.poster_xd_api.models.*;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -34,28 +33,17 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
 
     @Override
     protected Optional<Post> createPojoFromJsonObject(JsonObject requestAsJson) {
-        JsonElement userId = requestAsJson.get("user");
-        if (userId == null) return Optional.empty();
-
-        JsonElement locationId = requestAsJson.get("location");
-        if (locationId == null) return Optional.empty();
-
-        JsonElement dateString = requestAsJson.get("date");
-        if (dateString == null) return Optional.empty();
-
-        JsonElement content = requestAsJson.get("content");
-        if (content == null) return Optional.empty();
-
-
-        Optional<User> optionalUser = userDao.getById(userId.getAsLong());
-        Optional<Location> optionalLocation = locationDao.getById(locationId.getAsLong());
-
-        //TODO check if Java 11 works fine to refine this expression as optional.isEmpty()
+        if (!requestAsJson.has("user")) return Optional.empty();
+        if (requestAsJson.has("location")) return Optional.empty();
+        if (requestAsJson.has("date")) return Optional.empty();
+        if (requestAsJson.has("content")) return Optional.empty();
+        Optional<User> optionalUser = userDao.getById(requestAsJson.get("user").getAsLong());
+        Optional<Location> optionalLocation = locationDao.getById(requestAsJson.get("location").getAsLong());
         if (!(optionalUser.isPresent() && optionalLocation.isPresent())) {
             return Optional.empty();
         }
-        Date date1 = new DateParser().parseDate(dateString.getAsString());
-        Post post = new Post(optionalUser.get(), optionalLocation.get(), date1, content.getAsString());
+        Date date1 = new DateParser().parseDate(requestAsJson.get("date").getAsString());
+        Post post = new Post(optionalUser.get(), optionalLocation.get(), date1, requestAsJson.get("content").getAsString());
         return Optional.of(post);
     }
 
