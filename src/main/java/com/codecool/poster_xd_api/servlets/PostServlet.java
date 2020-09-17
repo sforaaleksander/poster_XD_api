@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
-
 public class PostServlet extends PosterAbstractServlet<Post, Comment> {
     UserDao userDao = new UserDao();
     LocationDao locationDao = new LocationDao();
@@ -56,9 +55,6 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
                 return;
             }
             post.setLocation(optionalLocation.get());
-        }
-        if (jsonObject.has("date")) {
-            post.setDate(new DateParser().parseDate(jsonObject.get("date").getAsString()));
         }
         if (jsonObject.has("content")) {
             post.setContent(jsonObject.get("content").getAsString());
