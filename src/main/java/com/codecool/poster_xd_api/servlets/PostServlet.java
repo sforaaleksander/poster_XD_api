@@ -67,8 +67,7 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
         List<Post> postList;
         List<List<Post>> lists = new ArrayList<>();
         addObjectsMatchingParameter(req, lists, "content");
-        //TODO
-//        addObjectsMatchingParameter(req, lists, "date");
+        addObjectsMatchingParameter(req, lists, "date");
         postList = populateObjectList(lists);
         String objectsAsJsonString = postList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
