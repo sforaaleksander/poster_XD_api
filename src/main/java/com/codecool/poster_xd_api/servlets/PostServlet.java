@@ -1,5 +1,6 @@
 package com.codecool.poster_xd_api.servlets;
 
+import com.codecool.poster_xd_api.DateParser;
 import com.codecool.poster_xd_api.dao.LocationDao;
 import com.codecool.poster_xd_api.dao.PostDao;
 import com.codecool.poster_xd_api.dao.UserDao;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

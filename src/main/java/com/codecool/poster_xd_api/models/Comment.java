@@ -1,6 +1,6 @@
 package com.codecool.poster_xd_api.models;
 
-import com.codecool.poster_xd_api.helpers.DateParser;
+import com.codecool.poster_xd_api.DateParser;
 import com.google.gson.JsonObject;
 import lombok.Data;
 

@@ -1,6 +1,5 @@
 package com.codecool.poster_xd_api;
 
-import com.codecool.poster_xd_api.helpers.DateParser;
 import com.codecool.poster_xd_api.models.Comment;
 import com.codecool.poster_xd_api.models.Location;
 import com.codecool.poster_xd_api.models.Post;
