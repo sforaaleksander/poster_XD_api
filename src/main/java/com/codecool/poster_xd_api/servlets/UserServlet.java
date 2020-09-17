@@ -11,9 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "users", urlPatterns = {"/users/*"}, loadOnStartup = 1)
@@ -60,11 +58,44 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
 
     @Override
     protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        List<User> userList = new ArrayList<>();
+        List<List<User>> lists = new ArrayList<>();
+        List<User> list1;
+        List<User> list2;
+        List<User> list3;
+
         String surname = req.getParameter("surname");
         if (surname != null) {
-            List<User> userList = dao.getObjectsByField("surname", surname);
-            String objectsAsJsonString = userList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
-            writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
+            list1 = dao.getObjectsByField("surname", surname);
+            lists.add(list1);
         }
+
+        String name = req.getParameter("name");
+        if (name != null) {
+            list2 = dao.getObjectsByField("name", name);
+            lists.add(list2);
+        }
+
+        String isActive = req.getParameter("isActive");
+        if (isActive != null) {
+            list3 = dao.getObjectsByField("isActive", isActive);
+            lists.add(list3);
+        }
+
+        if (!lists.isEmpty()) {
+            userList = lists.get(0);
+        }
+
+//        Set<User> result = Sets.newHashSet(lists.get(0));
+//        for (List<User> numbers : list) {
+//            result = Sets.intersection(result, Sets.newHashSet(numbers));
+//        }
+//        for (List<User> list : lists) {
+//
+//        }
+
+        String objectsAsJsonString = userList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
+
     }
 }
