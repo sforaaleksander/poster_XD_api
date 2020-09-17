@@ -4,16 +4,19 @@ import com.codecool.poster_xd_api.DateParser;
 import com.codecool.poster_xd_api.dao.LocationDao;
 import com.codecool.poster_xd_api.dao.PostDao;
 import com.codecool.poster_xd_api.dao.UserDao;
-import com.codecool.poster_xd_api.models.Comment;
-import com.codecool.poster_xd_api.models.Location;
-import com.codecool.poster_xd_api.models.Post;
-import com.codecool.poster_xd_api.models.User;
+import com.codecool.poster_xd_api.models.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @WebServlet(name = "posts", urlPatterns = {"/posts/*"})
@@ -76,5 +79,20 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
         if (content != null) post.setContent(content.getAsString());
 
         dao.update(post);
+    }
+
+    @Override
+    protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        List<Post> postList;
+        List<List<Post>> lists = new ArrayList<>();
+
+        addObjectsMatchingParameter(req, lists, "content");
+        //TODO
+//        addObjectsMatchingParameter(req, lists, "date");
+
+        postList = populateObjectList(lists);
+
+        String objectsAsJsonString = postList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }
 }
