@@ -52,9 +52,34 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     public List<T> getObjectsByField(String fieldName, String fieldValue) {
-        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE lower(u." + fieldName + ") LIKE lower(:value)", aClass);
+        return isFieldBoolean(fieldName)
+                ? getObjectsByBooleanField(fieldName, fieldValue)
+                : getObjectsByStringField(fieldName, fieldValue);
+    }
+
+    protected List<T> getObjectsByStringField(String fieldName, String fieldValue) {
+        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE lower(u." + fieldName + ") LIKE :value", aClass);
         return query
-                .setParameter("value", "%" + fieldValue + "%")
+                .setParameter("value", "%" + fieldValue.toLowerCase() + "%")
                 .getResultList();
+    }
+
+    protected List<T> getObjectsByBooleanField(String fieldName, String fieldValue){
+        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u WHERE u." + fieldName + " = :value", aClass);
+        return query
+                .setParameter("value", Boolean.valueOf(fieldValue.toLowerCase()))
+                .getResultList();
+    }
+
+    private boolean isFieldBoolean(String fieldName) {
+        try {
+            Class<?> k = aClass.getDeclaredField(fieldName).getType();
+            if (k == boolean.class) {
+                return true;
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
