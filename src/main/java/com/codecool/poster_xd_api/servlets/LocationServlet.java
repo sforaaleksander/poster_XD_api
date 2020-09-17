@@ -41,7 +41,7 @@ public class LocationServlet extends PosterAbstractServlet<Location, Post> {
 
     @Override
     protected void updateObject(JsonObject jsonObject, Location location) {
-        if (!jsonObject.has("name")) location.setName(jsonObject.get("name").getAsString());
+        if (jsonObject.has("name")) location.setName(jsonObject.get("name").getAsString());
         dao.update(location);
     }
 
