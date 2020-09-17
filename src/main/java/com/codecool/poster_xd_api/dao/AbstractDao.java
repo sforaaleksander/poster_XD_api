@@ -84,10 +84,10 @@ public abstract class AbstractDao<T> implements IDao<T> {
                 .getResultList();
     }
 
-    private boolean isFieldType(String fieldName, Class<?> c) {
+    private boolean isFieldType(String fieldName, Class<?> toCompareClass) {
         try {
-            Class<?> k = aClass.getDeclaredField(fieldName).getType();
-            if (k == c) {
+            Class<?> fieldClass = aClass.getDeclaredField(fieldName).getType();
+            if (fieldClass == toCompareClass) {
                 return true;
             }
         } catch (NoSuchFieldException e) {
