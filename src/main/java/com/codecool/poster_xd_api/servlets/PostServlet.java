@@ -61,23 +61,17 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
 
     @Override
     protected void updateObject(JsonObject jsonObject, Post post) {
-        JsonElement locationId = jsonObject.get("location");
-        if (locationId != null) {
-            Optional<Location> optionalLocation = locationDao.getById(locationId.getAsLong());
+        if (jsonObject.has("location")) {
+            Optional<Location> optionalLocation = locationDao.getById(jsonObject.get("location").getAsLong());
             if (!optionalLocation.isPresent()) {
                 return;
             }
             post.setLocation(optionalLocation.get());
         }
-
-        JsonElement date = jsonObject.get("date");
-        if (date != null) {
-            post.setDate(new DateParser().parseDate(date.getAsString()));
+        if (jsonObject.has("date")) {
+            post.setDate(new DateParser().parseDate(jsonObject.get("date").getAsString()));
         }
-
-        JsonElement content = jsonObject.get("content");
-        if (content != null) post.setContent(content.getAsString());
-
+        if (jsonObject.has("content")) post.setContent(jsonObject.get("content").getAsString());
         dao.update(post);
     }
 
@@ -85,13 +79,10 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
     protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<Post> postList;
         List<List<Post>> lists = new ArrayList<>();
-
         addObjectsMatchingParameter(req, lists, "content");
         //TODO
 //        addObjectsMatchingParameter(req, lists, "date");
-
         postList = populateObjectList(lists);
-
         String objectsAsJsonString = postList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }
