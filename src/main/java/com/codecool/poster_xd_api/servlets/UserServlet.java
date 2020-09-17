@@ -60,42 +60,32 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
     protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<User> userList = new ArrayList<>();
         List<List<User>> lists = new ArrayList<>();
-        List<User> list1;
-        List<User> list2;
-        List<User> list3;
 
-        String surname = req.getParameter("surname");
-        if (surname != null) {
-            list1 = dao.getObjectsByField("surname", surname);
-            lists.add(list1);
+        addUsersMatchingParameter(req, lists, "surname");
+        addUsersMatchingParameter(req, lists, "name");
+        addUsersMatchingParameter(req, lists, "isActive");
+
+        if (lists.size() > 1) {
+            for (int i = 1; i < lists.size(); i++) {
+                lists.get(0).retainAll(lists.get(i));
+            }
         }
-
-        String name = req.getParameter("name");
-        if (name != null) {
-            list2 = dao.getObjectsByField("name", name);
-            lists.add(list2);
-        }
-
-        String isActive = req.getParameter("isActive");
-        if (isActive != null) {
-            list3 = dao.getObjectsByField("isActive", isActive);
-            lists.add(list3);
-        }
-
-        if (!lists.isEmpty()) {
+        if (lists.size() > 0) {
             userList = lists.get(0);
+        } else {
+            userList = dao.getAll();
         }
-
-//        Set<User> result = Sets.newHashSet(lists.get(0));
-//        for (List<User> numbers : list) {
-//            result = Sets.intersection(result, Sets.newHashSet(numbers));
-//        }
-//        for (List<User> list : lists) {
-//
-//        }
 
         String objectsAsJsonString = userList.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
 
+    }
+
+    private void addUsersMatchingParameter(HttpServletRequest req, List<List<User>> lists, String parameter) {
+        String surname = req.getParameter(parameter);
+        if (surname != null) {
+            List<User> list1 = dao.getObjectsByField(parameter, surname);
+            lists.add(list1);
+        }
     }
 }

@@ -41,7 +41,9 @@ public abstract class AbstractDao<T> implements IDao<T> {
 
     @Override
     public List<T> getAll() {
-        return null;
+        TypedQuery<T> query = entityManager.createQuery("SELECT u FROM " + aClass.getSimpleName() + " u", aClass);
+        return query
+                .getResultList();
     }
 
     private void handleTransaction(Consumer<T> method, T object) {
