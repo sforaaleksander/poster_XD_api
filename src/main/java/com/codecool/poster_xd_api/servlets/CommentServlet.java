@@ -42,7 +42,11 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
         if (!(optionalUser.isPresent() && optionalPost.isPresent())) {
             return Optional.empty();
         }
-        Comment comment = new Comment(optionalPost.get(), optionalUser.get(), jsonObject.get("content").getAsString());
+        Comment comment = new Comment(
+                optionalPost.get(),
+                optionalUser.get(),
+                jsonObject.get("content").getAsString());
+
         return Optional.of(comment);
     }
 
@@ -71,7 +75,8 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
         String objectsAsJsonString = commentList
                 .stream()
-                .map(e -> (Jsonable) e).map(Jsonable::toJson)
+                .map(e -> (Jsonable) e)
+                .map(Jsonable::toJson)
                 .collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }

@@ -43,11 +43,11 @@ public class Post implements Indexable, Jsonable, Containable<Comment> {
 
     public String toJson() {
         JsonObject object = new JsonObject();
-        object.addProperty("id", this.getId());
-        object.addProperty("user", this.user.getId());
-        object.addProperty("location", this.location.getId());
+        object.addProperty("id", id);
+        object.addProperty("user", user.getId());
+        object.addProperty("location", location.getId());
         object.addProperty("date", new DateParser().dateToString(date));
-        object.addProperty("content", this.content);
+        object.addProperty("content", content);
         return object.toString();
     }
 

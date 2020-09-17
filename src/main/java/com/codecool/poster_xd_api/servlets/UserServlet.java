@@ -67,7 +67,8 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
 
         String objectsAsJsonString = userList
                 .stream()
-                .map(e -> (Jsonable) e).map(Jsonable::toJson)
+                .map(e -> (Jsonable) e)
+                .map(Jsonable::toJson)
                 .collect(Collectors.joining(",\n"));
         writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
     }

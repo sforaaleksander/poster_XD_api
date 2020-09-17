@@ -39,10 +39,10 @@ public @Data class User implements Indexable, Jsonable, Containable<Post> {
 
     public String toJson() {
         JsonObject obj = new JsonObject();
-        obj.addProperty("id", this.id);
-        obj.addProperty("name", this.name);
-        obj.addProperty("surname", this.surname);
-        obj.addProperty("email", this.email);
+        obj.addProperty("id", id);
+        obj.addProperty("name", name);
+        obj.addProperty("surname", surname);
+        obj.addProperty("email", email);
         obj.addProperty("posts", String.format("http://localhost:8080/users/%d/posts", id));
         return obj.toString();
     }
