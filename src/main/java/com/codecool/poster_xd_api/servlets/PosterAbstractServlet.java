@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,6 +53,10 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
         resp.getWriter().println("could not find " + objectName);
     }
 
+    protected void getObjectsForRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.getWriter().println("not implemented");
+    }
+
     private void getSingleObject(HttpServletResponse resp, T object) throws IOException {
         resp.setStatus(200);
         resp.setContentType("application/json");
@@ -62,10 +67,14 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
     protected void getSubPathObjects(HttpServletResponse resp, T object) throws IOException {
         Containable<S> container = (Containable<S>) object;
         Set<S> objects = container.getSubObjects();
-        String postsJsonString = objects.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        String objectsAsJsonString = objects.stream().map(e->(Jsonable)e).map(Jsonable::toJson).collect(Collectors.joining(",\n"));
+        writeObjectsToResponseFromCollection(resp, objectsAsJsonString);
+    }
+
+    protected void writeObjectsToResponseFromCollection(HttpServletResponse resp, String objectsAsJsonString) throws IOException {
         resp.setStatus(200);
         resp.setContentType("application/json");
-        resp.getWriter().println("[" + postsJsonString + "]");
+        resp.getWriter().println("[" + objectsAsJsonString + "]");
     }
 
     @Override
