@@ -25,10 +25,12 @@ public class UserServlet extends PosterAbstractServlet<User, Post> {
 
     @Override
     protected Optional<User> createPojoFromJsonObject(JsonObject requestAsJson) {
-        if (requestAsJson.has("name")) return Optional.empty();
-        if (requestAsJson.has("surname")) return Optional.empty();
-        if (requestAsJson.has("email")) return Optional.empty();
-        if (requestAsJson.has("password")) return Optional.empty();
+        if (!(requestAsJson.has("name")
+                && requestAsJson.has("surname")
+                && requestAsJson.has("email")
+                && requestAsJson.has("password"))) {
+            return Optional.empty();
+        }
         User user = new User(
                 requestAsJson.get("name").getAsString(),
                 requestAsJson.get("surname").getAsString(),

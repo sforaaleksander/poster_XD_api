@@ -32,11 +32,13 @@ public class CommentServlet extends PosterAbstractServlet<Comment, String> {
 
     @Override
     Optional<Comment> createPojoFromJsonObject(JsonObject jsonObject) {
-        if (jsonObject.has("id")) return Optional.empty();
-        if (jsonObject.has("user")) return Optional.empty();
-        if (jsonObject.has("date")) return Optional.empty();
-        if (jsonObject.has("post")) return Optional.empty();
-        if (jsonObject.has("content")) return Optional.empty();
+        if (!(jsonObject.has("id")
+                && jsonObject.has("user")
+                && jsonObject.has("date")
+                && jsonObject.has("post")
+                && jsonObject.has("content"))) {
+            return Optional.empty();
+        }
 
         Optional<User> optionalUser = userDao.getById(jsonObject.get("id").getAsLong());
         Optional<Post> optionalPost = postDao.getById(jsonObject.get("user").getAsLong());
