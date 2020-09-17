@@ -34,9 +34,9 @@ public class PostServlet extends PosterAbstractServlet<Post, Comment> {
     @Override
     protected Optional<Post> createPojoFromJsonObject(JsonObject requestAsJson) {
         if (!requestAsJson.has("user")) return Optional.empty();
-        if (requestAsJson.has("location")) return Optional.empty();
-        if (requestAsJson.has("date")) return Optional.empty();
-        if (requestAsJson.has("content")) return Optional.empty();
+        if (!requestAsJson.has("location")) return Optional.empty();
+        if (!requestAsJson.has("date")) return Optional.empty();
+        if (!requestAsJson.has("content")) return Optional.empty();
         Optional<User> optionalUser = userDao.getById(requestAsJson.get("user").getAsLong());
         Optional<Location> optionalLocation = locationDao.getById(requestAsJson.get("location").getAsLong());
         if (!(optionalUser.isPresent() && optionalLocation.isPresent())) {
