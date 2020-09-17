@@ -92,7 +92,8 @@ public abstract class PosterAbstractServlet<T, S> extends HttpServlet {
             resp.setStatus(201);
             Indexable object = (Indexable) optionalObject.get();
             resp.setHeader("location", rootPath + object.getId());
-            resp.getWriter().println("resource created successfully");
+            resp.setContentType("application/json");
+            resp.getWriter().println(((Jsonable) object).toJson());
             return;
         }
         resp.setStatus(422);
