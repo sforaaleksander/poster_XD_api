@@ -50,7 +50,7 @@ public class Location implements Indexable, Jsonable, Containable<Post>{
 
     @Override
     public long getId() {
-        return 0;
+        return id;
     }
 
     public void setName(String name) {
