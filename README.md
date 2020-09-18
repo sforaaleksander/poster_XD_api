@@ -25,13 +25,9 @@
 
 `grant all privileges on database restdb to restuser;`
 
-2. Uncomment two commented lines in persistence.xml.
+2. Run script run.sh in terminal (you have to be in the project directory).
 
-3. Run App.main() to populate the database.
-
-4. Comment those 2 lines back xD.
-
-5. Run server - jetty:run.
+`bash run.sh`
 
 #### endpoints:
 
