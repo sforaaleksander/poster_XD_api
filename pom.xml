@@ -13,7 +13,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.postgres>42.1.1</version.postgres>
     </properties>
 
     <dependencies>
@@ -45,7 +44,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${version.postgres}</version>
+            <version>42.1.1</version>
         </dependency>
       
         <dependency>
